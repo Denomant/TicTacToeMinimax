@@ -5,7 +5,7 @@ package TicTacToe;
  * Date: 16/12/25
  * Course: ICS3U
  * Random.java
- * A class representing a random Tic Tac Toe player who makes a move randomly.
+ * A class implementing a random Tic Tac Toe player who makes a move randomly.
  */
 
 public class Random implements TicTacToePlayer {

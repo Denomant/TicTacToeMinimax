@@ -22,4 +22,8 @@ public enum CellValue {
     public int getValue() {
         return value;
     }
+
+    public char getCharacter() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
