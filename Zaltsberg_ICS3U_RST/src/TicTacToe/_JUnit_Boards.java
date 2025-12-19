@@ -43,14 +43,14 @@ public class _JUnit_Boards {
     private void testBoardConstructorsAndGetCells(TicTacToeBoard<?>[] allBoards, int expectedSize) {
         int i = 0;
         for (TicTacToeBoard<?> board : allBoards) {
-            Assert.assertNotNull("Board " + TEST_BOARDS_DESCRIPTIONS[i] + " should not be null", board);
-            Assert.assertEquals("Board " + TEST_BOARDS_DESCRIPTIONS[i] + " should have " + expectedSize + " rows", expectedSize, board.getCells().length);
+            Assert.assertNotNull("Board " + i + " should not be null", board);
+            Assert.assertEquals("Board " + i + " should have " + expectedSize + " rows", expectedSize, board.getCells().length);
             for (Cell[] row : board.getCells()) {
-                Assert.assertNotNull("Row in Board " + TEST_BOARDS_DESCRIPTIONS[i] + " should not be null", row);
-                Assert.assertEquals("Each row in Board " + TEST_BOARDS_DESCRIPTIONS[i] + " should have " + expectedSize + " columns", expectedSize, row.length);
+                Assert.assertNotNull("Row in Board " + i + " should not be null", row);
+                Assert.assertEquals("Each row in Board " + i + " should have " + expectedSize + " columns", expectedSize, row.length);
                 for (Cell cell : row) {
-                    Assert.assertNotNull("Cell in Board " + TEST_BOARDS_DESCRIPTIONS[i] + " should not be null", cell);
-                    Assert.assertTrue("Cell value should be X, O, or EMPTY (board " + TEST_BOARDS_DESCRIPTIONS[i] + ")",
+                    Assert.assertNotNull("Cell in Board " + i + " should not be null", cell);
+                    Assert.assertTrue("Cell value should be X, O, or EMPTY (board " + i + ")",
                             cell.getValue() == CellValue.X ||
                             cell.getValue() == CellValue.O ||
                             cell.getValue() == CellValue.EMPTY
@@ -64,14 +64,6 @@ public class _JUnit_Boards {
     /* =======================
      * Test Boards Constructor
      * =======================*/
-
-    private final String[] TEST_BOARDS_DESCRIPTIONS = {
-        "Empty board",
-        "Partially filled board",
-        "Winning board for X",
-        "Winning board for O",
-        "Full board with no winner"
-    };
 
     private Board3x3[] boards3x3;
     private Board4x4[] boards4x4;
@@ -184,7 +176,7 @@ public class _JUnit_Boards {
 
     @Test
     public void testBoard3x3ConstructorsAndGetCells() {
-        // Add the default empty constructor (no parameters) to the test array for one time only
+        // Include the default empty constructor once for coverage
         Board3x3 defaultBoard = new Board3x3();
         Board3x3 [] allBoards3x3 = new Board3x3[boards3x3.length + 1];
 
@@ -196,7 +188,7 @@ public class _JUnit_Boards {
 
     @Test
     public void testBoard4x4ConstructorsAndGetCells() {
-        // Add the default empty constructor (no parameters) to the test array for one time only
+        // Include the default empty constructor once for coverage
         Board4x4 defaultBoard = new Board4x4();
         Board4x4 [] allBoards4x4 = new Board4x4[boards4x4.length + 1];
 
@@ -315,14 +307,14 @@ public class _JUnit_Boards {
         int [] emptyCellsCount3x3 = new int[] {9, 6, 4, 3, 0};
         for (int i = 0; i < boards3x3.length; i++) {
             Cell[] emptyCells = boards3x3[i].getEmptyCells();
-            Assert.assertEquals("Board 3x3 " + TEST_BOARDS_DESCRIPTIONS[i] + " should have correct number of empty cells",
+            Assert.assertEquals("Board 3x3 " + i + " should have correct number of empty cells",
                     emptyCellsCount3x3[i], emptyCells.length);
         }
 
         int [] emptyCellsCount4x4 = new int[] {16, 12, 9, 7, 0};
         for (int i = 0; i < boards4x4.length; i++) {
             Cell[] emptyCells = boards4x4[i].getEmptyCells();
-            Assert.assertEquals("Board 4x4 " + TEST_BOARDS_DESCRIPTIONS[i] + " should have correct number of empty cells",
+            Assert.assertEquals("Board 4x4 " + i + " should have correct number of empty cells",
                     emptyCellsCount4x4[i], emptyCells.length);
         }
 
@@ -331,20 +323,20 @@ public class _JUnit_Boards {
     @Test
     public void testBoardsGetCurrentPlayer() {
         CellValue [] currentPlayers3x3 = new CellValue[] {
-            CellValue.X, CellValue.X, CellValue.O, CellValue.X, null
+            CellValue.X, CellValue.O, null, null, null
         };
         for (int i = 0; i < boards3x3.length; i++) {
             CellValue currentPlayer = boards3x3[i].getCurrentPlayer();
-            Assert.assertEquals("Board 3x3 " + TEST_BOARDS_DESCRIPTIONS[i] + " should have correct current player",
+            Assert.assertEquals("Board 3x3 " + i + " should have correct current player",
                     currentPlayers3x3[i], currentPlayer);
         }
 
         CellValue [] currentPlayers4x4 = new CellValue[] {
-            CellValue.X, CellValue.X, CellValue.O, CellValue.X, null
+            CellValue.X, CellValue.X, null, null, null
         };
         for (int i = 0; i < boards4x4.length; i++) {
             CellValue currentPlayer = boards4x4[i].getCurrentPlayer();
-            Assert.assertEquals("Board 4x4 " + TEST_BOARDS_DESCRIPTIONS[i] + " should have correct current player",
+            Assert.assertEquals("Board 4x4 " + i + " should have correct current player",
                     currentPlayers4x4[i], currentPlayer);
         }
     }
@@ -355,7 +347,7 @@ public class _JUnit_Boards {
             false, false, true, true, true
         };
         for (int i = 0; i < boards3x3.length; i++) {
-            Assert.assertEquals("Board 3x3 " + TEST_BOARDS_DESCRIPTIONS[i] + " should have correct terminal state",
+            Assert.assertEquals("Board 3x3 " + i + " should have correct terminal state",
                     terminalStates3x3[i], boards3x3[i].isTerminal());
         }
 
@@ -363,7 +355,7 @@ public class _JUnit_Boards {
             false, false, true, true, true
         };
         for (int i = 0; i < boards4x4.length; i++) {
-            Assert.assertEquals("Board 4x4 " + TEST_BOARDS_DESCRIPTIONS[i] + " should have correct terminal state",
+            Assert.assertEquals("Board 4x4 " + i + " should have correct terminal state",
                     terminalStates4x4[i], boards4x4[i].isTerminal());
         }
     }
@@ -374,7 +366,7 @@ public class _JUnit_Boards {
             null, null, CellValue.X, CellValue.O, null
         };
         for (int i = 0; i < boards3x3.length; i++) {
-            Assert.assertEquals("Board 3x3 " + TEST_BOARDS_DESCRIPTIONS[i] + " should have correct winner",
+            Assert.assertEquals("Board 3x3 " + i + " should have correct winner",
                     winners3x3[i], boards3x3[i].getWinner());
         }
 
@@ -382,7 +374,7 @@ public class _JUnit_Boards {
             null, null, CellValue.X, CellValue.O, null
         };
         for (int i = 0; i < boards4x4.length; i++) {
-            Assert.assertEquals("Board 4x4 " + TEST_BOARDS_DESCRIPTIONS[i] + " should have correct winner",
+            Assert.assertEquals("Board 4x4 " + i + " should have correct winner",
                     winners4x4[i], boards4x4[i].getWinner());
         }
     }

@@ -13,6 +13,9 @@ public class Cell {
     private final CellValue value;
 
     Cell(int row, int col, CellValue value) {
+        if (row < 0 || col < 0 || value == null) {
+            throw new IllegalArgumentException("Invalid cell parameters");
+        }
         this.row = row;
         this.col = col;
         this.value = value;

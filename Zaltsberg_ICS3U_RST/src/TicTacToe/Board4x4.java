@@ -10,7 +10,25 @@ package TicTacToe;
 
 public final class Board4x4 extends TicTacToeBoard<Board4x4> {
     public Board4x4() {
-        super(new Cell[4][4]);
+        this(initializeEmptyCells());
+    }
+
+    public Board4x4(Cell[][] cells) {
+        super(cells);
+
+        if (cells.length != 4 || cells[0].length != 4) {
+            throw new IllegalArgumentException("Invalid board size");
+        }
+    }
+
+    private static Cell[][] initializeEmptyCells() {
+        Cell[][] cells = new Cell[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                cells[i][j] = new Cell(i, j, CellValue.EMPTY);
+            }
+        }
+        return cells;
     }
 
     @Override
