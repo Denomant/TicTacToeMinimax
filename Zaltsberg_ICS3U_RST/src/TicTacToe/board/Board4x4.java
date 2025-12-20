@@ -1,5 +1,8 @@
 package TicTacToe;
 
+import TicTacToe.model.Cell;
+import TicTacToe.model.CellValue;
+
 /**
  * @Author Denis Zaltsberg
  * Date: 16/12/25
@@ -32,12 +35,12 @@ public final class Board4x4 extends TicTacToeBoard<Board4x4> {
     }
 
     @Override
-    boolean isTerminal() {
+    public boolean isTerminal() {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
-    CellValue getWinner() {
+    public CellValue getWinner() {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 }

@@ -1,5 +1,8 @@
 package TicTacToe;
 
+import TicTacToe.model.Cell;
+import TicTacToe.model.CellValue;
+
 /**
  * @author Denis Zaltsberg
  * Date: 16/12/25
@@ -29,27 +32,27 @@ public abstract class TicTacToeBoard <T extends TicTacToeBoard<T>> {
         return cells;
     }
 
-    T moveResult(Cell cell) {
+    public T moveResult(Cell cell) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    T getMirroredVertically() {
+    public T getMirroredVertically() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    T getMirroredHorizontally() {
+    public T getMirroredHorizontally() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    Cell[] getEmptyCells() {
+    public Cell[] getEmptyCells() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    CellValue getCurrentPlayer() {
+    public CellValue getCurrentPlayer() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    abstract boolean isTerminal();
+    abstract public boolean isTerminal();
 
-    abstract CellValue getWinner();
+    abstract public CellValue getWinner();
 }

@@ -1,4 +1,4 @@
-package TicTacToe;
+package TicTacToe.model;
 
 /**
  * @author Denis Zaltsberg
@@ -12,7 +12,7 @@ public class Cell {
     private final int row, col;
     private final CellValue value;
 
-    Cell(int row, int col, CellValue value) {
+    public Cell(int row, int col, CellValue value) {
         if (row < 0 || col < 0 || value == null) {
             throw new IllegalArgumentException("Invalid cell parameters");
         }
@@ -21,7 +21,7 @@ public class Cell {
         this.value = value;
     }
 
-    Cell(int row, int col) {
+    public Cell(int row, int col) {
         this(row, col, CellValue.EMPTY);
     }
 
@@ -47,15 +47,15 @@ public class Cell {
         return value;
     }
 
-    char getValueCharacter() {
+    public char getValueCharacter() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    String getValueString() {
+    public String getValueString() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

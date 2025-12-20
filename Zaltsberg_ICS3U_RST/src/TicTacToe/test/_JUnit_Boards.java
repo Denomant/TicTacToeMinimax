@@ -1,8 +1,14 @@
-package TicTacToe;
+package TicTacToe.test;
 
 import org.junit.Before;
 import org.junit.Assert;
 import org.junit.Test;
+
+import TicTacToe.Board3x3;
+import TicTacToe.Board4x4;
+import TicTacToe.TicTacToeBoard;
+import TicTacToe.model.Cell;
+import TicTacToe.model.CellValue;
 
 /**
  * @author Denis Zaltsberg
