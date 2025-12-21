@@ -9,5 +9,5 @@ package TicTacToe.input;
  */
 
 public interface IntInputReader {
-
+    public int readInt(String prompt);
 }

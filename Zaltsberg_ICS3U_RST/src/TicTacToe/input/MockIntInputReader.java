@@ -22,8 +22,7 @@ public class MockIntInputReader implements IntInputReader {
         if (currentIndex < inputs.length) {
             return inputs[currentIndex++];
         } else {
-            throw new IndexOutOfBoundsException("No more mock inputs available.");
+            throw new IndexOutOfBoundsException("No more mock inputs available. Prompt was: " + prompt  );
         }
     }
-
 }

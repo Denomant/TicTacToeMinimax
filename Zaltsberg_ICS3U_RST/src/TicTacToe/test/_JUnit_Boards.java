@@ -4,9 +4,9 @@ import org.junit.Before;
 import org.junit.Assert;
 import org.junit.Test;
 
-import TicTacToe.Board3x3;
-import TicTacToe.Board4x4;
-import TicTacToe.TicTacToeBoard;
+import TicTacToe.board.Board3x3;
+import TicTacToe.board.Board4x4;
+import TicTacToe.board.TicTacToeBoard;
 import TicTacToe.model.Cell;
 import TicTacToe.model.CellValue;
 
@@ -19,11 +19,11 @@ import TicTacToe.model.CellValue;
 */
 
 public class _JUnit_Boards {
-    /* =======================
+    /* ==============
      * Helper Methods
-     * =======================*/
+     * ==============*/
     
-    private static Cell[][] generateBoard(int size, Cell[] moves) {
+    static Cell[][] generateBoard(int size, Cell[] moves) {
         Cell[][] board = new Cell[size][size];
 
         // generate empty board
@@ -46,38 +46,8 @@ public class _JUnit_Boards {
         return board;
     }
 
-    private void testBoardConstructorsAndGetCells(TicTacToeBoard<?>[] allBoards, int expectedSize) {
-        int i = 0;
-        for (TicTacToeBoard<?> board : allBoards) {
-            Assert.assertNotNull("Board " + i + " should not be null", board);
-            Assert.assertEquals("Board " + i + " should have " + expectedSize + " rows", expectedSize, board.getCells().length);
-            for (Cell[] row : board.getCells()) {
-                Assert.assertNotNull("Row in Board " + i + " should not be null", row);
-                Assert.assertEquals("Each row in Board " + i + " should have " + expectedSize + " columns", expectedSize, row.length);
-                for (Cell cell : row) {
-                    Assert.assertNotNull("Cell in Board " + i + " should not be null", cell);
-                    Assert.assertTrue("Cell value should be X, O, or EMPTY (board " + i + ")",
-                            cell.getValue() == CellValue.X ||
-                            cell.getValue() == CellValue.O ||
-                            cell.getValue() == CellValue.EMPTY
-                    );
-                }
-            }
-            i++;
-        }
-    }
-
-    /* =======================
-     * Test Boards Constructor
-     * =======================*/
-
-    private Board3x3[] boards3x3;
-    private Board4x4[] boards4x4;
-
-    @Before
-    public void setUp() {
-        // Initialize the 3x3 boards
-        boards3x3 = new Board3x3[] {
+    static Board3x3[] generateBoards3x3() {
+        return new Board3x3[] {
             // Empty board
             new Board3x3(generateBoard(3, null)),
 
@@ -120,9 +90,10 @@ public class _JUnit_Boards {
                 new Cell(2, 2, CellValue.X)
             })),
         };
+    }
 
-        // Initialize the 4x4 boards
-        boards4x4 = new Board4x4[] {
+    static Board4x4[] generateBoards4x4() {
+        return new Board4x4[] {
             // Empty board
             new Board4x4(generateBoard(4, null)),
 
@@ -175,7 +146,42 @@ public class _JUnit_Boards {
                 new Cell(3, 2, CellValue.O),
                 new Cell(3, 1, CellValue.X),
                 new Cell(3, 0, CellValue.O)
-            })),};
+            })),
+        };
+    }
+
+    private void testBoardConstructorsAndGetCells(TicTacToeBoard<?>[] allBoards, int expectedSize) {
+        int i = 0;
+        for (TicTacToeBoard<?> board : allBoards) {
+            Assert.assertNotNull("Board " + i + " should not be null", board);
+            Assert.assertEquals("Board " + i + " should have " + expectedSize + " rows", expectedSize, board.getCells().length);
+            for (Cell[] row : board.getCells()) {
+                Assert.assertNotNull("Row in Board " + i + " should not be null", row);
+                Assert.assertEquals("Each row in Board " + i + " should have " + expectedSize + " columns", expectedSize, row.length);
+                for (Cell cell : row) {
+                    Assert.assertNotNull("Cell in Board " + i + " should not be null", cell);
+                    Assert.assertTrue("Cell value should be X, O, or EMPTY (board " + i + ")",
+                            cell.getValue() == CellValue.X ||
+                            cell.getValue() == CellValue.O ||
+                            cell.getValue() == CellValue.EMPTY
+                    );
+                }
+            }
+            i++;
+        }
+    }
+
+    /* =======================
+     * Test Boards Constructor
+     * =======================*/
+
+    private Board3x3[] boards3x3;
+    private Board4x4[] boards4x4;
+
+    @Before
+    public void setUp() {
+        boards3x3 = generateBoards3x3();
+        boards4x4 = generateBoards4x4();
     }
 
     // Test the constructors work as expected before proceeding to other tests

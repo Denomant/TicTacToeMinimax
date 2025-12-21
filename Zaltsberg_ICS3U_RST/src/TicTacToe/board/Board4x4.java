@@ -1,4 +1,4 @@
-package TicTacToe;
+package TicTacToe.board;
 
 import TicTacToe.model.Cell;
 import TicTacToe.model.CellValue;

@@ -1,4 +1,6 @@
-package TicTacToe;
+package TicTacToe.boardprinter;
+
+import TicTacToe.board.TicTacToeBoard;
 
 /**
  * @author Denis Zaltsberg
