@@ -19,7 +19,7 @@ import TicTacToe.board.TicTacToeBoard;
 
  */
 public final class BoxCharacterPrinter implements BoardPrinter {
-    BoxCharacterPrinter() {
+    public BoxCharacterPrinter() {
     }
 
     @Override

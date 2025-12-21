@@ -15,7 +15,7 @@ import TicTacToe.board.TicTacToeBoard;
  */
 
 public final class SimplePrinter implements BoardPrinter{
-    SimplePrinter() {
+    public SimplePrinter() {
     }
 
     @Override
