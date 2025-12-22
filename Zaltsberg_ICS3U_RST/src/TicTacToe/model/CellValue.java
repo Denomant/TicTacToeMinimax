@@ -24,6 +24,15 @@ public enum CellValue {
     }
 
     public char getCharacter() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        switch (this) {
+            case X:
+                return 'X';
+            case O:
+                return 'O';
+            case EMPTY:
+                return ' ';
+            default:
+                throw new IllegalStateException("Unexpected value: " + value);
+        }
     }
 }

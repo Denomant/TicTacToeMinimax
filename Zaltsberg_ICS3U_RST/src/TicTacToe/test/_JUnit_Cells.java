@@ -41,30 +41,14 @@ public class _JUnit_Cells {
         Assert.assertNotNull("CellValue.O should not be null", CellValue.O);
         Assert.assertNotNull("CellValue.EMPTY should not be null", CellValue.EMPTY);
     }
-
-    /* ===========================
-     * Unimplemented Methods Tests
-     * ===========================*/
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testCellValueGetCharacterUnsupported() {
-        CellValue.X.getCharacter();
-    }
     
-    /* ===========================
-     * Logical Behavior Tests
-     * Uncomment when implemented
-     * ===========================*/
-
-    /* 
     @Test
     public void testCellValueGetCharacter() {
         Assert.assertEquals("CellValue.X.getCharacter() should return 'X'", 'X', CellValue.X.getCharacter());
         Assert.assertEquals("CellValue.O.getCharacter() should return 'O'", 'O', CellValue.O.getCharacter());
         Assert.assertEquals("CellValue.EMPTY.getCharacter() should return ' '", ' ', CellValue.EMPTY.getCharacter());
     }
-    */
-
+    
 
     /* ============
      * Cell Tests
@@ -98,48 +82,7 @@ public class _JUnit_Cells {
             }
         }
     }
-
-    /* ===========================
-     * Unimplemented Methods Tests
-     * ===========================*/
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testCellHashCodeUnsupported() {
-        Cell cell = new Cell(0, 0, CellValue.X);
-        cell.hashCode();
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testCellEqualsUnsupported() {
-        Cell cell1 = new Cell(0, 0, CellValue.X);
-        Cell cell2 = new Cell(0, 0, CellValue.X);
-        cell1.equals(cell2);
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testCellGetValueCharacterUnsupported() {
-        Cell cell = new Cell(0, 0, CellValue.X);
-        cell.getValueCharacter();
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testCellGetValueStringUnsupported() {
-        Cell cell = new Cell(0, 0, CellValue.X);
-        cell.getValueString();
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testCellIsEmptyUnsupported() {
-        Cell cell = new Cell(0, 0, CellValue.X);
-        cell.isEmpty();
-    }
-
-    /* ===========================
-     * Logical Behavior Tests
-     * Uncomment when implemented
-     * ===========================*/
-
-    /* 
+    
     @Test
     public void testCellHashCode() {
         Cell cell1 = new Cell(2, 2, CellValue.O);
@@ -209,5 +152,4 @@ public class _JUnit_Cells {
         Assert.assertFalse("Cell with value O should not be empty", cellO.isEmpty());
         Assert.assertTrue("Cell with value EMPTY should be empty", cellEmpty.isEmpty());
     }
-    */
 }

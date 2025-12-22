@@ -8,7 +8,7 @@ package TicTacToe.model;
  * An immutable class cell representing a single cell on the Tic Tac Toe board.
  */
 
-public class Cell {
+public final class Cell {
     private final int row, col;
     private final CellValue value;
 
@@ -27,12 +27,34 @@ public class Cell {
 
     @Override
     public int hashCode() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        int result = 31;
+        result = 31 * result + row;
+        result = 31 * result + col;
+        result = 31 * result + value.hashCode();
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // Early-exit optimization point
+        if (this == obj) {
+            return true;
+        }
+
+        // Check the other object is not null
+        if (obj == null) {
+            return false;
+        }
+
+        // Check the other class is a cell
+        if (obj.getClass() != Cell.class){
+            return false;
+        }
+
+        // Cast obj to Cell
+        Cell other = (Cell) obj;
+
+        return row == other.row && col == other.col && value == other.value;
     }
 
     public int getRow() {
@@ -48,14 +70,14 @@ public class Cell {
     }
 
     public char getValueCharacter() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return value.getCharacter();
     }
 
     public String getValueString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return Character.toString(value.getCharacter()); 
     }
 
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return value == CellValue.EMPTY;
     }
 }
