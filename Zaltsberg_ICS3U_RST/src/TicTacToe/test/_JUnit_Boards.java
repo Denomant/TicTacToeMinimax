@@ -23,6 +23,9 @@ public class _JUnit_Boards {
      * Helper Methods
      * ==============*/
     
+    private Board3x3[] boards3x3;
+    private Board4x4[] boards4x4;
+
     static Cell[][] generateBoard(int size, Cell[] moves) {
         Cell[][] board = new Cell[size][size];
 
@@ -150,6 +153,12 @@ public class _JUnit_Boards {
         };
     }
 
+    @Before
+    public void setUp() {
+        boards3x3 = generateBoards3x3();
+        boards4x4 = generateBoards4x4();
+    }
+
     private void testBoardConstructorsAndGetCells(TicTacToeBoard<?>[] allBoards, int expectedSize) {
         int i = 0;
         for (TicTacToeBoard<?> board : allBoards) {
@@ -171,18 +180,41 @@ public class _JUnit_Boards {
         }
     }
 
+    @FunctionalInterface
+    private interface BoardMirror{
+        TicTacToeBoard<?> mirror(TicTacToeBoard<?> board);
+    }
+
+    private void testMirroringSharedBehavior(String boardMirrorName, BoardMirror mirrorFunction) {
+        // Mirroring an empty board should return a board that would be equal to the original board, but different object
+        TicTacToeBoard<?> mirroredBoard = mirrorFunction.mirror(boards3x3[0]);
+        Assert.assertNotSame(boardMirrorName + ": Mirrored empty 3x3 board should be a different object than the original board",
+                mirroredBoard, boards3x3[0]);
+        Assert.assertEquals(boardMirrorName + ": Mirrored empty 3x3 board should be equal to the original board",
+                mirroredBoard, boards3x3[0]);
+
+        mirroredBoard = mirrorFunction.mirror(boards4x4[0]);
+        Assert.assertNotSame(boardMirrorName + ": Mirrored empty 4x4 board should be a different object than the original board",
+                mirroredBoard, boards4x4[0]);
+        Assert.assertEquals(boardMirrorName + ": Mirrored empty 4x4 board should be equal to the original board",
+                mirroredBoard, boards4x4[0]);
+
+        // Double mirroring contract check
+        for (int i = 0; i < boards3x3.length; i++) {
+            mirroredBoard = mirrorFunction.mirror(mirrorFunction.mirror(boards3x3[i]));
+            Assert.assertEquals(boardMirrorName + ": Double mirrored Board3x3 " + i + " should equal the original board",
+                    boards3x3[i], mirroredBoard);
+
+            mirroredBoard = mirrorFunction.mirror(mirrorFunction.mirror(boards4x4[i]));
+            Assert.assertEquals(boardMirrorName + ": Double mirrored Board4x4 " + i + " should equal the original board",
+                    boards4x4[i], mirroredBoard);
+        }
+    }
+
     /* =======================
      * Test Boards Constructor
      * =======================*/
 
-    private Board3x3[] boards3x3;
-    private Board4x4[] boards4x4;
-
-    @Before
-    public void setUp() {
-        boards3x3 = generateBoards3x3();
-        boards4x4 = generateBoards4x4();
-    }
 
     // Test the constructors work as expected before proceeding to other tests
 
@@ -214,80 +246,64 @@ public class _JUnit_Boards {
      * Unimplemented Methods Tests
      * ===========================*/
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testBoardsHashCodeUnsupported() {
-        boards3x3[0].hashCode();
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testBoardsEqualsUnsupported() {
-        boards3x3[0].equals(boards3x3[1]);
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testBoardsMoveResultUnsupported() {
-        boards3x3[0].moveResult(new Cell(0, 0, CellValue.X));
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testBoardsGetMirroredVerticallyUnsupported() {
-        boards3x3[0].getMirroredVertically();
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testBoardsGetMirroredHorizontallyUnsupported() {
-        boards3x3[0].getMirroredHorizontally();
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testBoardsGetEmptyCellsUnsupported() {
-        boards3x3[0].getEmptyCells();
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testBoardsGetCurrentPlayerUnsupported() {
-        boards3x3[0].getCurrentPlayer();
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testBoardsIsTerminalUnsupported() {
-        boards3x3[0].isTerminal();
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testBoardsGetWinnerUnsupported() {
-        boards3x3[0].getWinner();
-    }
-    
-    /* ===========================
-     * Logical Behavior Tests
-     * Uncomment when implemented
-     * ===========================*/
-
-    /*
-
     @Test
     public void testBoardsHashCode() {
-        // Create a new empty board and test its hash code with the pregenerated empty boards
-        Board3x3 newEmptyBoard3x3 = new Board3x3();
-        Assert.assertEquals("New empty 3x3 board should have the same hash code as pregenerated empty board",
-                boards3x3[0].hashCode(), newEmptyBoard3x3.hashCode());
+        // Re-generate all boards, and test that their hashes are euqal, despite them being diffrent objects
+        Board3x3[] regeneratedBoards3x3 = generateBoards3x3();
+        Board4x4[] regeneratedBoards4x4 = generateBoards4x4();
 
-        Board4x4 newEmptyBoard4x4 = new Board4x4();
-        Assert.assertEquals("New empty 4x4 board should have the same hash code as pregenerated empty board",
-                boards4x4[0].hashCode(), newEmptyBoard4x4.hashCode());
+        for (int i = 0; i < boards3x3.length; i++) {
+            // Ensure they are different objects
+            Assert.assertNotSame("Board3x3 " + i + " should be a different object than its regenerated counterpart",
+                    boards3x3[i], regeneratedBoards3x3[i]);
+            Assert.assertNotSame("Board4x4 " + i + " should be a different object than its regenerated counterpart",
+                    boards4x4[i], regeneratedBoards4x4[i]);
+
+            // Test that their hash codes are equal
+            Assert.assertEquals("Board3x3 " + i + " should have the same hash code as its regenerated counterpart",
+                    boards3x3[i].hashCode(), regeneratedBoards3x3[i].hashCode());
+            Assert.assertEquals("Board4x4 " + i + " should have the same hash code as its regenerated counterpart",
+                    boards4x4[i].hashCode(), regeneratedBoards4x4[i].hashCode());
+        }
     }
 
     @Test
     public void testBoardsEquals() {
-        // Create a new empty board and test its equality with the pregenerated empty boards
-        Board3x3 newEmptyBoard3x3 = new Board3x3();
-        Assert.assertTrue("New empty 3x3 board should be equal to pregenerated empty board",
-                boards3x3[0].equals(newEmptyBoard3x3));
+        // Regenerate all boards, and test that they are equal, depite them being diffrent objects
+        Board3x3[] regeneratedBoards3x3 = generateBoards3x3();
+        Board4x4[] regeneratedBoards4x4 = generateBoards4x4();
 
-        Board4x4 newEmptyBoard4x4 = new Board4x4();
-        Assert.assertTrue("New empty 4x4 board should be equal to pregenerated empty board",
-                boards4x4[0].equals(newEmptyBoard4x4));
+        for (int i = 0; i < boards3x3.length; i++) {
+            // Ensure they are different objects
+            Assert.assertNotSame("Board3x3 " + i + " should be a different object than its regenerated counterpart",
+                    boards3x3[i], regeneratedBoards3x3[i]);
+            Assert.assertNotSame("Board4x4 " + i + " should be a different object than its regenerated counterpart",
+                    boards4x4[i], regeneratedBoards4x4[i]);
+
+            // Test that they are equal
+            Assert.assertEquals("Board3x3 " + i + " should be equal to its regenerated counterpart",
+                    boards3x3[i], regeneratedBoards3x3[i]);
+            Assert.assertEquals("Board4x4 " + i + " should be equal to its regenerated counterpart",
+                    boards4x4[i], regeneratedBoards4x4[i]);
+
+            // Test that they are not equal to null or different types
+            Assert.assertNotEquals("Board3x3 " + i + " should not be equal to null",
+                    boards3x3[i], null);
+            Assert.assertNotEquals("Board3x3 " + i + " should not be equal to an object of a different type",
+                    boards3x3[i], "NOT BOARD");
+            Assert.assertNotEquals("Board4x4 " + i + " should not be equal to null",
+                    boards4x4[i], null);
+            Assert.assertNotEquals("Board4x4 " + i + " should not be equal to an object of a different type",
+                    boards4x4[i], "NOT BOARD");
+
+            // Test that different boards are not equal
+            if (i < boards3x3.length - 1) {
+                Assert.assertNotEquals("Board3x3 " + i + " should not be equal to Board3x3 " + (i + 1),
+                        boards3x3[i], boards3x3[i + 1]);
+                Assert.assertNotEquals("Board4x4 " + i + " should not be equal to Board4x4 " + (i + 1),
+                        boards4x4[i], boards4x4[i + 1]);
+            }
+        }
     }
 
     @Test
@@ -296,7 +312,7 @@ public class _JUnit_Boards {
             1) verify the new state is correct
             2) verify the original board is unchanged
             3) verify the new board is a different object
-        *\/
+        */
         Board3x3 newBoard3x3 = boards3x3[0].moveResult(new Cell(0, 0));
         Assert.assertEquals("New board after move should have X at (0,0)",
                 CellValue.X, newBoard3x3.getCells()[0][0].getValue());
@@ -315,6 +331,105 @@ public class _JUnit_Boards {
     }
 
     @Test
+    public void testBoardsGetMirroredVertically() {
+        testMirroringSharedBehavior("Vertical Mirroring", TicTacToeBoard::getMirroredVertically);
+
+        /* Expected Vertical Mirroring Behavior:
+        board at index 1
+        X X 3    1 X X
+        4 O 5 -> 4 O 6
+        6 7 8    7 8 9
+
+        X X 3 4       1 2 X X
+        5 O 7 8    -> 5 6 O 8
+        9 10 O 12     9 O 11 12
+        13 14 15 16   13 14 15 16
+
+        Test:
+        1) Mirrored board matches expected layout
+        2) Original board remains unchanged
+        3) Mirrored board is a different object than the original board
+        */
+        Board3x3 expectedBoard3x3 = new Board3x3(generateBoard(3, new Cell[] {
+            new Cell(0, 1, CellValue.X),
+            new Cell(1, 1, CellValue.O),
+            new Cell(0, 2, CellValue.X)
+        }));
+        Board4x4 expectedBoard4x4 = new Board4x4(generateBoard(4, new Cell[] {
+            new Cell(0, 2, CellValue.X),
+            new Cell(1, 2, CellValue.O),
+            new Cell(0, 3, CellValue.X),
+            new Cell(2, 1, CellValue.O)
+        }));
+
+        Board3x3 mirroredBoard3x3 = boards3x3[1].getMirroredHorizontally();
+        Assert.assertEquals("Mirrored Board3x3 at index 1 should match expected layout",
+                expectedBoard3x3, mirroredBoard3x3);
+        Assert.assertNotEquals("Original Board3x3 at index 1 should remain unchanged",
+                expectedBoard3x3, boards3x3[1]);
+        Assert.assertNotSame("Mirrored Board3x3 at index 1 should be a different object than the original board",
+                mirroredBoard3x3, boards3x3[1]);
+
+        Board4x4 mirroredBoard4x4 = boards4x4[1].getMirroredHorizontally();
+        Assert.assertEquals("Mirrored Board4x4 at index 1 should match expected layout",
+                expectedBoard4x4, mirroredBoard4x4);
+        Assert.assertNotEquals("Original Board4x4 at index 1 should remain unchanged",
+                expectedBoard4x4, boards4x4[1]);
+        Assert.assertNotSame("Mirrored Board4x4 at index 1 should be a different object than the original board",
+                mirroredBoard4x4, boards4x4[1]);
+    }
+    
+    @Test
+    public void testBoardsGetMirroredHorizontally() {
+        testMirroringSharedBehavior("Horizontal Mirroring", TicTacToeBoard::getMirroredHorizontally);
+
+        /* Expected Mirroring Behavior:
+        board at index 1
+        X X 3    1 2 3
+        4 O 5 -> 4 O 6
+        6 7 8    X X 9
+
+        X X 3 4       1 2 3 4
+        5 O 7 8    -> 5 6 O 8
+        9 10 O 12     9 O 11 12
+        13 14 15 16   X X 15 16
+        Test:
+        1) Mirrored board matches expected layout
+        2) Original board remains unchanged
+        3) Mirrored board is a different object than the original board
+        */
+
+        Board3x3 expectedBoard3x3 = new Board3x3(generateBoard(3, new Cell[] {
+            new Cell(2, 0, CellValue.X),
+            new Cell(1, 1, CellValue.O),
+            new Cell(2, 1, CellValue.X)
+        }));
+
+        Board4x4 expectedBoard4x4 = new Board4x4(generateBoard(4, new Cell[] {
+            new Cell(3, 0, CellValue.X),
+            new Cell(1, 2, CellValue.O),
+            new Cell(3, 1, CellValue.X),
+            new Cell(2, 1, CellValue.O)
+        }));
+
+        Board3x3 mirroredBoard3x3 = boards3x3[1].getMirroredVertically();
+        Assert.assertEquals("Mirrored Board3x3 at index 1 should match expected layout",
+                expectedBoard3x3, mirroredBoard3x3);
+        Assert.assertNotEquals("Original Board3x3 at index 1 should remain unchanged",
+                expectedBoard3x3, boards3x3[1]);
+        Assert.assertNotSame("Mirrored Board3x3 at index 1 should be a different object than the original board",
+                mirroredBoard3x3, boards3x3[1]);
+
+        Board4x4 mirroredBoard4x4 = boards4x4[1].getMirroredVertically();
+        Assert.assertEquals("Mirrored Board4x4 at index 1 should match expected layout",
+                expectedBoard4x4, mirroredBoard4x4);
+        Assert.assertNotEquals("Original Board4x4 at index 1 should remain unchanged",
+                expectedBoard4x4, boards4x4[1]);
+        Assert.assertNotSame("Mirrored Board4x4 at index 1 should be a different object than the original board",
+                mirroredBoard4x4, boards4x4[1]);
+    }
+
+    @Test
     public void testBoardsGetEmptyCells() {
         int [] emptyCellsCount3x3 = new int[] {9, 6, 4, 3, 0};
         for (int i = 0; i < boards3x3.length; i++) {
@@ -323,17 +438,16 @@ public class _JUnit_Boards {
                     emptyCellsCount3x3[i], emptyCells.length);
         }
 
-        int [] emptyCellsCount4x4 = new int[] {16, 12, 9, 7, 0};
+        int [] emptyCellsCount4x4 = new int[] {16, 12, 9, 8, 0};
         for (int i = 0; i < boards4x4.length; i++) {
             Cell[] emptyCells = boards4x4[i].getEmptyCells();
             Assert.assertEquals("Board 4x4 " + i + " should have correct number of empty cells",
                     emptyCellsCount4x4[i], emptyCells.length);
         }
-
     }
 
     @Test
-    public void testBoardsGetCurrentPlayer() {
+    public void testBoardsGetCurrentPlayer() {        
         CellValue [] currentPlayers3x3 = new CellValue[] {
             CellValue.X, CellValue.O, null, null, null
         };
@@ -352,6 +466,23 @@ public class _JUnit_Boards {
                     currentPlayers4x4[i], currentPlayer);
         }
     }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testBoardsIsTerminalUnsupported() {
+        boards3x3[0].isTerminal();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testBoardsGetWinnerUnsupported() {
+        boards3x3[0].getWinner();
+    }
+    
+    /* ===========================
+     * Logical Behavior Tests
+     * Uncomment when implemented
+     * ===========================*/
+
+    /*
 
     @Test
     public void testBoardsIsTerminal() {

@@ -43,4 +43,9 @@ public final class Board4x4 extends TicTacToeBoard<Board4x4> {
     public CellValue getWinner() {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
+
+    @Override
+    protected Board4x4 create(Cell[][] cells) {
+        return new Board4x4(cells);
+    }
 }
