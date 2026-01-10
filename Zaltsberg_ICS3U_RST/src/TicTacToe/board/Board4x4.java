@@ -35,13 +35,41 @@ public final class Board4x4 extends TicTacToeBoard<Board4x4> {
     }
 
     @Override
-    public boolean isTerminal() {
-        throw new UnsupportedOperationException("Not implemented yet.");
-    }
-
-    @Override
     public CellValue getWinner() {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        // Check rows and columns for a winner
+        for (int i = 0; i < 4; i++) {
+            // Check row
+            if (cells[i][0].getValue() != CellValue.EMPTY &&
+                cells[i][0].getValue() == cells[i][1].getValue() &&
+                cells[i][1].getValue() == cells[i][2].getValue() &&
+                cells[i][2].getValue() == cells[i][3].getValue()){
+                return cells[i][0].getValue();
+            }
+
+            // Check column
+            if (cells[0][i].getValue() != CellValue.EMPTY &&
+                cells[0][i].getValue() == cells[1][i].getValue() &&
+                cells[1][i].getValue() == cells[2][i].getValue() &&
+                cells[2][i].getValue() == cells[3][i].getValue()) {
+                return cells[0][i].getValue();
+            }
+        }
+        // Check diagonals for a winner
+        if (cells[0][0].getValue() != CellValue.EMPTY &&
+            cells[0][0].getValue() == cells[1][1].getValue() &&
+            cells[1][1].getValue() == cells[2][2].getValue() &&
+            cells[2][2].getValue() == cells[3][3].getValue()) {
+            return cells[0][0].getValue();
+        }
+        if (cells[0][3].getValue() != CellValue.EMPTY &&
+            cells[0][3].getValue() == cells[1][2].getValue() &&
+            cells[1][2].getValue() == cells[2][1].getValue() &&
+            cells[2][1].getValue() == cells[3][0].getValue()) {
+            return cells[0][3].getValue();
+        }
+
+        // If no winner found, return a tie if the board is full, else return null if the game is not over
+        return getEmptyCells().length == 0 ? CellValue.EMPTY : null;
     }
 
     @Override

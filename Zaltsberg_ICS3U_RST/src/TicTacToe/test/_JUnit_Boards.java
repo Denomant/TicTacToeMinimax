@@ -86,11 +86,11 @@ public class _JUnit_Boards {
                 new Cell(0, 1, CellValue.O),
                 new Cell(0, 2, CellValue.X),
                 new Cell(1, 0, CellValue.O),
-                new Cell(1, 1, CellValue.X),
-                new Cell(1, 2, CellValue.O),
+                new Cell(1, 2, CellValue.X),
+                new Cell(1, 1, CellValue.O),
                 new Cell(2, 0, CellValue.X),
-                new Cell(2, 1, CellValue.O),
-                new Cell(2, 2, CellValue.X)
+                new Cell(2, 2, CellValue.O),
+                new Cell(2, 1, CellValue.X)
             })),
         };
     }
@@ -137,10 +137,10 @@ public class _JUnit_Boards {
                 new Cell(0, 1, CellValue.O),
                 new Cell(0, 2, CellValue.X),
                 new Cell(0, 3, CellValue.O),
-                new Cell(1, 3, CellValue.X),
-                new Cell(1, 2, CellValue.O),
-                new Cell(1, 1, CellValue.X),
-                new Cell(1, 0, CellValue.O),
+                new Cell(1, 2, CellValue.X),
+                new Cell(1, 3, CellValue.O),
+                new Cell(1, 0, CellValue.X),
+                new Cell(1, 1, CellValue.O),
                 new Cell(2, 0, CellValue.X),
                 new Cell(2, 1, CellValue.O),
                 new Cell(2, 2, CellValue.X),
@@ -467,23 +467,6 @@ public class _JUnit_Boards {
         }
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testBoardsIsTerminalUnsupported() {
-        boards3x3[0].isTerminal();
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testBoardsGetWinnerUnsupported() {
-        boards3x3[0].getWinner();
-    }
-    
-    /* ===========================
-     * Logical Behavior Tests
-     * Uncomment when implemented
-     * ===========================*/
-
-    /*
-
     @Test
     public void testBoardsIsTerminal() {
         boolean [] terminalStates3x3 = new boolean[] {
@@ -506,7 +489,7 @@ public class _JUnit_Boards {
     @Test
     public void testBoardsGetWinner() {
         CellValue [] winners3x3 = new CellValue[] {
-            null, null, CellValue.X, CellValue.O, null
+            null, null, CellValue.X, CellValue.O, CellValue.EMPTY
         };
         for (int i = 0; i < boards3x3.length; i++) {
             Assert.assertEquals("Board 3x3 " + i + " should have correct winner",
@@ -514,12 +497,11 @@ public class _JUnit_Boards {
         }
 
         CellValue [] winners4x4 = new CellValue[] {
-            null, null, CellValue.X, CellValue.O, null
+            null, null, CellValue.X, CellValue.O, CellValue.EMPTY
         };
         for (int i = 0; i < boards4x4.length; i++) {
             Assert.assertEquals("Board 4x4 " + i + " should have correct winner",
                     winners4x4[i], boards4x4[i].getWinner());
         }
     }
-    */
 }

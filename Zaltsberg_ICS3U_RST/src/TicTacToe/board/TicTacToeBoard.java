@@ -155,7 +155,10 @@ public abstract class TicTacToeBoard <T extends TicTacToeBoard<T>> {
         return (xCount <= oCount) ? CellValue.X : CellValue.O;
     }
 
-    abstract public boolean isTerminal();
+    public boolean isTerminal() {
+        // if there is a winner or a tie the game is over.
+        return (getWinner() != null);
+    }
 
     abstract public CellValue getWinner();
 
