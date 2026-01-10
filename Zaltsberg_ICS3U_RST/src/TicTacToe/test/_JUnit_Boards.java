@@ -504,4 +504,94 @@ public class _JUnit_Boards {
                     winners4x4[i], boards4x4[i].getWinner());
         }
     }
+
+    @Test
+    public void testBoardsGetCellReflectedVertically() {
+        // 3x3 tests
+        Cell[] testCells3x3 = new Cell[] {
+            new Cell(0, 0),
+            new Cell(1, 1),
+            new Cell(0, 2),
+            new Cell(2, 2)
+        };
+
+        Cell[] expectedCells3x3 = new Cell[] {
+            new Cell(0, 2),
+            new Cell(1, 1),
+            new Cell(0, 0),
+            new Cell(2, 0)
+        };
+        
+        for (int i = 0; i < testCells3x3.length; i++) {
+            Cell reflectedCell = boards3x3[0].getCellReflectedVertically(testCells3x3[i]);
+            Assert.assertEquals("Reflected Cell in Board3x3 should match expected cell",
+                    expectedCells3x3[i], reflectedCell);
+        }
+
+        // 4x4 tests
+        Cell[] testCells4x4 = new Cell[] {
+            new Cell(0, 0),
+            new Cell(1, 2),
+            new Cell(0, 3),
+            new Cell(3, 3)
+        };
+
+        Cell[] expectedCells4x4 = new Cell[] {
+            new Cell(0, 3),
+            new Cell(1, 1),
+            new Cell(0, 0),
+            new Cell(3, 0)
+        };
+
+        for (int i = 0; i < testCells4x4.length; i++) {
+            Cell reflectedCell = boards4x4[0].getCellReflectedVertically(testCells4x4[i]);
+            Assert.assertEquals("Reflected Cell in Board4x4 should match expected cell",
+                    expectedCells4x4[i], reflectedCell);
+        }
+    }
+
+    @Test
+    public void testBoardsGetCellReflectedHorizontally() {
+        // 3x3 tests
+        Cell[] testCells3x3 = new Cell[] {
+            new Cell(0, 0),
+            new Cell(1, 1),
+            new Cell(0, 2),
+            new Cell(2, 2)
+        };
+
+        Cell[] expectedCells3x3 = new Cell[] {
+            new Cell(2, 0),
+            new Cell(1, 1),
+            new Cell(2, 2),
+            new Cell(0, 2)
+        };
+        
+        for (int i = 0; i < testCells3x3.length; i++) {
+            Cell reflectedCell = boards3x3[0].getCellReflectedHorizontally(testCells3x3[i]);
+            Assert.assertEquals("Reflected Cell in Board3x3 should match expected cell",
+                    expectedCells3x3[i], reflectedCell);
+        }
+
+        // 4x4 tests
+        Cell[] testCells4x4 = new Cell[] {
+            new Cell(0, 0),
+            new Cell(1, 2),
+            new Cell(0, 3),
+            new Cell(3, 3)
+        };
+
+        Cell[] expectedCells4x4 = new Cell[] {
+            new Cell(3, 0),
+            new Cell(2, 2),
+            new Cell(3, 3),
+            new Cell(0, 3)
+        };
+
+        for (int i = 0; i < testCells4x4.length; i++) {
+            Cell reflectedCell = boards4x4[0].getCellReflectedHorizontally(testCells4x4[i]);
+            Assert.assertEquals("Reflected Cell in Board4x4 should match expected cell",
+                    expectedCells4x4[i], reflectedCell);
+        }
+    }
 }

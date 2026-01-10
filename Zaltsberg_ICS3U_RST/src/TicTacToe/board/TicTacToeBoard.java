@@ -16,12 +16,19 @@ import java.util.ArrayList;
 public abstract class TicTacToeBoard <T extends TicTacToeBoard<T>> {
     protected final Cell[][] cells;
 
-    TicTacToeBoard(Cell[][] cells) {
-        // Make a deep copy of cells to ensure immutability
+    // Helper
+    protected static Cell[][] deepCopyCells(Cell[][] cells) {
         Cell[][] newCells = new Cell[cells.length][cells[0].length];
         for (int i = 0; i < cells.length; i++) {
+            // Safe because Cell is immutable
             newCells[i] = cells[i].clone();
         }
+        return newCells;
+    }
+
+    public TicTacToeBoard(Cell[][] cells) {
+        // Make a deep copy of cells to ensure immutability
+        Cell[][] newCells = deepCopyCells(cells);
 
         this.cells = newCells;
     }
@@ -54,7 +61,7 @@ public abstract class TicTacToeBoard <T extends TicTacToeBoard<T>> {
             return false;
         }
 
-        // Cast obj to Cell
+        // Cast obj to TicTacToeBoards
         TicTacToeBoard<?> other = (TicTacToeBoard<?>) obj;
 
         return Arrays.deepEquals(cells, other.cells);
@@ -70,10 +77,7 @@ public abstract class TicTacToeBoard <T extends TicTacToeBoard<T>> {
 
     public Cell[][] getCells() {
         // deep copy of the array
-        Cell[][] copy = new Cell[cells.length][cells[0].length];
-        for (int i = 0; i < cells.length; i++) {
-            copy[i] = cells[i].clone();
-        }
+        Cell[][] copy = deepCopyCells(cells);
         return copy;
     }
 
@@ -115,7 +119,15 @@ public abstract class TicTacToeBoard <T extends TicTacToeBoard<T>> {
         return create(newCells);
     }
 
-    // TODO: Add static methods for inversing a cell's position vertically and horizontally
+    public Cell getCellReflectedVertically(Cell cell) {
+        int newCol = cells[0].length - 1 - cell.getCol();
+        return cells[cell.getRow()][newCol];
+    }
+
+    public Cell getCellReflectedHorizontally(Cell cell) {
+        int newRow = cells.length - 1 - cell.getRow();
+        return cells[newRow][cell.getCol()];
+    }
 
     public Cell[] getEmptyCells() {
         ArrayList<Cell> emptyCells = new ArrayList<>();
