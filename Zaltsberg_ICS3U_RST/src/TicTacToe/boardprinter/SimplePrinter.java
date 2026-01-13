@@ -1,6 +1,7 @@
 package TicTacToe.boardprinter;
 
 import TicTacToe.board.TicTacToeBoard;
+import TicTacToe.model.*;
 
 /**
  * @author Denis Zaltsberg
@@ -15,12 +16,33 @@ import TicTacToe.board.TicTacToeBoard;
  */
 
 public final class SimplePrinter implements BoardPrinter{
-    public SimplePrinter() {
-    }
-
     @Override
     public String render(TicTacToeBoard<?> board) {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        StringBuilder result = new StringBuilder("");
+        Cell[][] cells = board.getCells();
+
+        int counter = 0;
+        for (Cell[] cellRow : cells){
+            result.append(" ");
+            for (Cell cell : cellRow){
+                counter += 1;
+
+                if (cell.getValue() == CellValue.EMPTY) {
+                    // Align double digit numbers
+                    if (counter < 10) {
+                        result.append(" ");
+                    }
+                    result.append(counter);
+                } else {
+                    result.append(" ").append(cell.getValueString());
+                }
+
+                result.append(" "); // space between cells
+            }
+            result.append("\n");
+        }
+
+        return result.toString();
     }
 }
 

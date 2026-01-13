@@ -11,12 +11,10 @@ import java.util.HashMap;
  * Course: ICS3U
  * Minimax.java
  * A class implementing the Minimax algorithm for Tic Tac Toe that always chooses the most optimal move.
- * Alpha-beta pruning source: https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
+ * Alpha-beta pruning source: https://en.wikipedias.org/wiki/Alpha%E2%80%93beta_pruning
  */
 
 public class Minimax implements TicTacToePlayer {
-    // TODO: Canonical board representation
-
     // Helper data class
     private static record MoveValue(Cell move, int score) {}
     // Placeholder
@@ -111,7 +109,7 @@ public class Minimax implements TicTacToePlayer {
 
         Cell[] emptyCells = board.getEmptyCells();
         MoveValue bestMove = new MoveValue(NO_MOVE, Integer.MAX_VALUE);
-        Boolean isPruned = false;
+        boolean isPruned = false;
 
         for (Cell move : emptyCells){
             MoveValue result = maximizer(board.moveResult(move), alpha, beta);
@@ -151,7 +149,7 @@ public class Minimax implements TicTacToePlayer {
 
         Cell[] emptyCells = board.getEmptyCells();
         MoveValue bestMove = new MoveValue(NO_MOVE, Integer.MIN_VALUE);
-        Boolean isPruned = false;
+        boolean isPruned = false;
 
         for (Cell move : emptyCells){
             MoveValue result = minimizer(board.moveResult(move), alpha, beta);
@@ -163,7 +161,7 @@ public class Minimax implements TicTacToePlayer {
             // Update alpha
             alpha = Math.max(alpha, bestMove.score);
 
-            // Prune if current alphas makes this move impossible
+            // Prune if current alpha makes this move impossible
             if (alpha >= beta) {
                 isPruned = true;
                 break;
@@ -173,7 +171,7 @@ public class Minimax implements TicTacToePlayer {
         if (!isPruned){
             putInMemory(board, bestMove);
         }
-        
+
         return bestMove;
     }
 

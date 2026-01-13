@@ -84,19 +84,19 @@ public class _JUnit_BoardPrinters {
     public void testSimplePrinter() {
         String[] expectedOutputs = {
             // Empty 3x3 board
-            " 1 2 3 \n" +
-            " 4 5 6 \n" +
-            " 7 8 9 \n",
+            "  1  2  3 \n" +
+            "  4  5  6 \n" +
+            "  7  8  9 \n",
 
             // Partially filled 3x3 board
-            " X 2 3 \n" +
-            " 4 O 6 \n" +
-            " 7 8 X \n",
+            "  X  2  3 \n" +
+            "  4  O  6 \n" +
+            "  7  8  X \n",
 
             // Full 3x3 board
-            " X O X \n" +
-            " O X O \n" +
-            " X O X \n",
+            "  X  O  X \n" +
+            "  O  X  O \n" +
+            "  X  O  X \n",
 
             // Empty 4x4 board
             "  1  2  3  4 \n" +
@@ -130,20 +130,20 @@ public class _JUnit_BoardPrinters {
         String[] expectedOutputs = {
             // Empty 3x3 board
             "┌───┬───┬───┐\n" +
-            "│ 1 │ 2 │ 3 │\n" +
+            "│   │   │   │\n" +
             "├───┼───┼───┤\n" +
-            "│ 4 │ 5 │ 6 │\n" +
+            "│   │   │   │\n" +
             "├───┼───┼───┤\n" + 
-            "│ 7 │ 8 │ 9 │\n" +
+            "│   │   │   │\n" +
             "└───┴───┴───┘\n",
 
             // Partially filled 3x3 board
             "┌───┬───┬───┐\n" +
-            "│ X │ 2 │ 3 │\n" +
+            "│ X │   │   │\n" +
             "├───┼───┼───┤\n" +
-            "│ 4 │ O │ 6 │\n" +
+            "│   │ O │   │\n" +
             "├───┼───┼───┤\n" +
-            "│ 7 │ 8 │ X │\n" +
+            "│   │   │ X │\n" +
             "└───┴───┴───┘\n",
 
             // Full 3x3 board
@@ -157,24 +157,24 @@ public class _JUnit_BoardPrinters {
 
             // Empty 4x4 board
             "┌───┬───┬───┬───┐\n" +
-            "│ 1 │ 2 │ 3 │ 4 │\n" +
+            "│   │   │   │   │\n" +
             "├───┼───┼───┼───┤\n" +
-            "│ 5 │ 6 │ 7 │ 8 │\n" +
+            "│   │   │   │   │\n" +
             "├───┼───┼───┼───┤\n" +
-            "│ 9 │10 │11 │12 │\n" +
+            "│   │   │   │   │\n" +
             "├───┼───┼───┼───┤\n" +
-            "│13 │14 │15 │16 │\n" +
+            "│   │   │   │   │\n" +
             "└───┴───┴───┴───┘\n",
 
             // Partially filled 4x4 board
             "┌───┬───┬───┬───┐\n" +
-            "│ O │ 2 │ 3 │ 4 │\n" +
+            "│ O │   │   │   │\n" +
             "├───┼───┼───┼───┤\n" +
-            "│ 5 │ X │ 7 │ 8 │\n" +
+            "│   │ X │   │   │\n" +
             "├───┼───┼───┼───┤\n" +
-            "│ 9 │10 │ O │12 │\n" +
+            "│   │   │ O │   │\n" +
             "├───┼───┼───┼───┤\n" +
-            "│13 │14 │15 │ X │\n" +
+            "│   │   │   │ X │\n" +
             "└───┴───┴───┴───┘\n",
 
             // Full 4x4 board
