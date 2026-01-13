@@ -4,6 +4,7 @@ import TicTacToe.model.Cell;
 import TicTacToe.model.CellValue;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author Denis Zaltsberg
@@ -119,14 +120,108 @@ public abstract class TicTacToeBoard <T extends TicTacToeBoard<T>> {
         return create(newCells);
     }
 
+    public T getRotated90(){
+        Cell[][] newCells = getCells();
+        int rows = newCells.length;
+        int cols = newCells[0].length;
+        Cell[][] rotatedCells = new Cell[cols][rows];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                rotatedCells[j][rows - 1 - i] = newCells[i][j];
+            }
+        }
+
+        normalizeCellPositions(rotatedCells);
+
+        return create(rotatedCells);
+    }
+
+    public T getRotated90(int times){
+        times = ((times % 4) + 4) % 4; // account for negatives
+
+        T result = create(getCells());
+
+        for (int i = 0; i < times; i++){
+            result = result.getRotated90();
+        }
+
+        return result;
+    }
+
     public Cell getCellReflectedVertically(Cell cell) {
+        if (cell == null) {
+            return null;
+        }
+
         int newCol = cells[0].length - 1 - cell.getCol();
-        return cells[cell.getRow()][newCol];
+        return new Cell(cell.getRow(), newCol, cell.getValue());
     }
 
     public Cell getCellReflectedHorizontally(Cell cell) {
+        if (cell == null) {
+            return null;
+        }
+        
         int newRow = cells.length - 1 - cell.getRow();
-        return cells[newRow][cell.getCol()];
+        return new Cell(newRow, cell.getCol(), cell.getValue());
+    }
+
+    public Cell getCellRotated90(Cell cell){
+        if (cell == null){
+            return null;
+        }
+
+        int newRow = cell.getCol();
+        int newCol = cells.length - 1 - cell.getRow();
+
+        return new Cell(newRow, newCol, cell.getValue());
+    }
+
+    public Cell getCellRotated90(Cell cell, int times){
+        if (cell == null){
+            return null;
+        }
+        times = ((times % 4) + 4) % 4; // account for negatives
+
+        Cell result = cell;
+
+        for (int i = 0; i < times; i++){
+            result = getCellRotated90(result);
+        }
+
+        return result;
+    }
+
+    public HashMap<T, Cell> getAllSymmetryCellMappings(Cell cell){
+        HashMap<T, Cell> map = new HashMap<>();
+        if (cell == null) return map;
+
+        // Original
+        map.put(create(getCells()), cell);
+
+        // Mirrors
+        T mirroredH = getMirroredHorizontally();
+        map.put(mirroredH, getCellReflectedHorizontally(cell));
+
+        T mirroredV = getMirroredVertically();
+        map.put(mirroredV, getCellReflectedVertically(cell));
+
+        // Rotations
+        for (int i = 1; i <= 3; i++) {
+            T rotated = getRotated90(i);
+            Cell rotatedCell = getCellRotated90(cell, i);
+            map.put(rotated, rotatedCell);
+
+            // Mirrored rotations
+            T rotatedH = rotated.getMirroredHorizontally();
+            map.put(rotatedH, rotated.getCellReflectedHorizontally(rotatedCell));
+
+            T rotatedV = rotated.getMirroredVertically();
+            map.put(rotatedV, rotated.getCellReflectedVertically(rotatedCell));
+        }
+
+        return map;
     }
 
     public Cell[] getEmptyCells() {

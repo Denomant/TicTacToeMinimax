@@ -1,6 +1,11 @@
 package TicTacToe.test;
 
 import org.junit.Before;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -241,10 +246,6 @@ public class _JUnit_Boards {
 
         testBoardConstructorsAndGetCells(allBoards4x4, 4);
     }
-
-    /* ===========================
-     * Unimplemented Methods Tests
-     * ===========================*/
 
     @Test
     public void testBoardsHashCode() {
@@ -592,6 +593,117 @@ public class _JUnit_Boards {
             Cell reflectedCell = boards4x4[0].getCellReflectedHorizontally(testCells4x4[i]);
             Assert.assertEquals("Reflected Cell in Board4x4 should match expected cell",
                     expectedCells4x4[i], reflectedCell);
+        }
+    }
+
+    @Test
+    public void testBoardRotated90_3x3() {
+        TicTacToeBoard<?> board = new Board3x3(_JUnit_Boards.generateBoard(3, new Cell[] {
+            new Cell(0, 0, CellValue.X),
+            new Cell(0, 1, CellValue.O),
+            new Cell(1, 0, CellValue.X)
+        }));
+
+        TicTacToeBoard<?> rotated = board.getRotated90();
+
+        Cell[][] cells = rotated.getCells();
+
+        Assert.assertEquals(CellValue.X, cells[0][2].getValue()); // (0,0) → (0,2)
+        Assert.assertEquals(CellValue.O, cells[1][2].getValue()); // (0,1) → (1,2)
+        Assert.assertEquals(CellValue.X, cells[0][1].getValue()); // (1,0) → (0,1)
+    }
+
+    @Test
+    public void testBoardRotated90FourTimesEqualsOriginal() {
+        TicTacToeBoard<?> board = boards3x3[0];
+        
+        TicTacToeBoard<?> rotated = board.getRotated90(4);
+
+        Assert.assertEquals("Rotating 4 times should return original board. Board 3x3", board, rotated);
+
+        board = boards4x4[0];
+        
+        rotated = board.getRotated90(4);
+
+        Assert.assertEquals("Rotating 4 times should return original board. Board 4x4", board, rotated);
+    }
+
+    @Test
+    public void testCellRotated90_3x3() {
+        TicTacToeBoard<?> board = new Board3x3();
+
+        Cell original = new Cell(0, 0, CellValue.X);
+        Cell rotated = board.getCellRotated90(original);
+
+        Assert.assertEquals(0, rotated.getRow());
+        Assert.assertEquals(2, rotated.getCol());
+        Assert.assertEquals(CellValue.X, rotated.getValue());
+    }
+
+    @Test
+    public void testCellRotated90_4x4() {
+        TicTacToeBoard<?> board = new Board4x4();
+
+        Cell original = new Cell(0, 0, CellValue.X);
+        Cell rotated = board.getCellRotated90(original);
+        Assert.assertEquals(0, rotated.getRow());
+        Assert.assertEquals(3, rotated.getCol());
+        Assert.assertEquals(CellValue.X, rotated.getValue());
+    }
+
+    @Test
+    public void testCellRotatedMultipleTimes() {
+        TicTacToeBoard<?> board = new Board4x4();
+
+        Cell original = new Cell(1, 2, CellValue.O);
+
+        Cell rotatedOnce = board.getCellRotated90(original, 1);
+        Cell rotatedTwice = board.getCellRotated90(original, 2);
+        Cell rotatedFour = board.getCellRotated90(original, 4);
+
+        Assert.assertNotEquals("1 rotation should change position", original, rotatedOnce);
+        Assert.assertNotEquals("2 rotations should change position", original, rotatedTwice);
+        Assert.assertEquals("4 rotations should return original cell", original, rotatedFour);
+    }
+
+    @Test
+    public void testSymmetryMapsIterableAndUnique() {
+                for (TicTacToeBoard<?> board : boards3x3) {
+            for (Cell cell : board.getEmptyCells()) {
+                HashMap<? extends TicTacToeBoard<?>, Cell> map = board.getAllSymmetryCellMappings(cell);
+
+                // Check map is non-null and iterable
+                Assert.assertNotNull("Symmetry map should not be null", map);
+                int count = 0;
+                for (HashMap.Entry<? extends TicTacToeBoard<?>, Cell> entry : map.entrySet()) {
+                    entry.getKey(); // Avoid warning
+                    count++;
+                }
+                Assert.assertEquals("Iterating entries should match map size", map.size(), count);
+
+                // Check uniqueness of keys
+                Set<? extends TicTacToeBoard<?>> uniqueKeys = new HashSet<>(map.keySet());
+                Assert.assertEquals("All boards in symmetry map should be unique", map.size(), uniqueKeys.size());
+            }
+        }
+
+        for (TicTacToeBoard<?> board : boards4x4) {
+            for (Cell cell : board.getEmptyCells()) {
+                HashMap<? extends TicTacToeBoard<?>, Cell> map = board.getAllSymmetryCellMappings(cell);
+
+                // Check map is non-null and iterable
+                Assert.assertNotNull("Symmetry map should not be null", map);
+                int count = 0;
+                for (HashMap.Entry<? extends TicTacToeBoard<?>, Cell> entry : map.entrySet()) {
+                    entry.getKey(); // Avoid warning
+                    count++;
+                }
+                Assert.assertEquals("Iterating entries should match map size", map.size(), count);
+
+                // Check uniqueness of keys
+                Set<TicTacToeBoard<?>> uniqueKeys = new HashSet<>(map.keySet());
+                Assert.assertEquals("All boards in symmetry map should be unique", map.size(), uniqueKeys.size());
+            }
         }
     }
 }

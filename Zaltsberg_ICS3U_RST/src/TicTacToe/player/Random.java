@@ -14,7 +14,13 @@ import TicTacToe.model.Cell;
 public class Random implements TicTacToePlayer {
     @Override
     public Cell makeMove(TicTacToeBoard<?> board) {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (board.isTerminal()){
+            return null;
+        }
+
+        Cell[] emptyCells = board.getEmptyCells();
+        int randomIndex = (int) (Math.random() * emptyCells.length);
+        return emptyCells[randomIndex];
     }
 
 }

@@ -40,13 +40,14 @@ public class _JUnit_Players {
     }
 
     private TicTacToeBoard<?>[] boards;
-    private TicTacToePlayer user, random, minimax;
+    private TicTacToePlayer user, random, minimax3x3, minimax4x4;
 
     @Before
     public void setUp() {
         // User is initialized in individual tests because it requires specific input list
         random = new Random();
-        minimax = new Minimax();
+        minimax3x3 = new Minimax();
+        minimax4x4 = new Minimax();
 
         // Generate all boards
         Board3x3[] boards3x3 = _JUnit_Boards.generateBoards3x3();
@@ -74,11 +75,30 @@ public class _JUnit_Players {
 
     @Test
     public void testMinimaxGetMove() {
-        Assert.assertNotNull("Player should be initialized", minimax);
+        Assert.assertNotNull("Player should be initialized", minimax3x3);
+        Assert.assertNotNull("Player should be initialized", minimax4x4);
 
-        testPlayerMovesValid(minimax);
+        // repeats testPlayerMovesValid(minimax) but with accout to diffrent minimaxes
+        for (TicTacToeBoard<?> board : boards) {
+            TicTacToePlayer player =
+                    (board instanceof Board3x3) ? minimax3x3 : minimax4x4;
 
-        // Test win-in-ones for Minimax
+            Cell move = player.makeMove(board);
+
+            if (board.isTerminal()) {
+                Assert.assertNull(move);
+            } else {
+                Assert.assertNotNull(move);
+                int row = move.getRow(), col = move.getCol();
+                Assert.assertTrue("Player's move row should be within bounds", row >= 0 && row < board.getCells().length);
+                Assert.assertTrue("Player's move column should be within bounds", col >= 0 && col < board.getCells().length);
+                Assert.assertTrue("Player's move should be EMPTY", board.getCells()[move.getRow()][move.getCol()].isEmpty());
+            }
+        }
+    }
+
+    @Test
+    public void testMinimaxWinInOne3x3(){
         TicTacToeBoard<?>[] winInOneBoards = new TicTacToeBoard<?>[] {
             // 3x3 Horizontal win for X (O moves for convenience)
             new Board3x3(_JUnit_Boards.generateBoard(3, new Cell[] {
@@ -95,8 +115,25 @@ public class _JUnit_Players {
                 new Cell(1, 0, CellValue.X),
                 new Cell(1, 1, CellValue.O),
                 new Cell(2, 1, CellValue.X)
-            })),
+            }))};
 
+        Cell[] expectedMoves = new Cell[] {
+            new Cell(0, 2), // 3x3 Horizontal win
+            new Cell(2, 0), // 3x3 Diagonal win
+        };
+
+        for (int i = 0; i < winInOneBoards.length; i++) {
+            TicTacToeBoard<?> board = winInOneBoards[i];
+            Cell expectedMove = expectedMoves[i];
+            Cell move = minimax3x3.makeMove(board);
+            Assert.assertNotNull("Minimax should return a move to win", move);
+            Assert.assertEquals("Expected winning move at (" + expectedMove.getRow() + "," + expectedMove.getCol() + ")", expectedMove, move);
+        }
+    }
+
+    @Test
+    public void testMinimaxWinInOne4x4(){
+        TicTacToeBoard<?>[] winInOneBoards = new TicTacToeBoard<?>[] {
             // 4x4 Vertical win for X (O moves for convenience)
             new Board4x4(_JUnit_Boards.generateBoard(4, new Cell[] {
                 new Cell(0, 0, CellValue.X),
@@ -107,7 +144,6 @@ public class _JUnit_Players {
                 new Cell(2, 1, CellValue.O),
                 new Cell(3, 0, CellValue.X)
             })),
-
             // 4x4 Anti-diagonal win for O (X moves for convenience)
             new Board4x4(_JUnit_Boards.generateBoard(4, new Cell[] {
                 new Cell(0, 0, CellValue.X),
@@ -118,25 +154,22 @@ public class _JUnit_Players {
                 new Cell(2, 1, CellValue.O),
                 new Cell(3, 1, CellValue.X),
                 new Cell(3, 0, CellValue.O)
-            })),
-        };
+            }))};
 
         Cell[] expectedMoves = new Cell[] {
-            new Cell(0, 2), // 3x3 Horizontal win
-            new Cell(2, 0), // 3x3 Diagonal win
-            new Cell(3, 0), // 4x4 Vertical win
+            new Cell(3, 0),  // 4x4 Vertical win
             new Cell(3, 0)  // 4x4 Anti-diagonal win
         };
-
+        
         for (int i = 0; i < winInOneBoards.length; i++) {
             TicTacToeBoard<?> board = winInOneBoards[i];
             Cell expectedMove = expectedMoves[i];
-            Cell move = minimax.makeMove(board);
+            Cell move = minimax4x4.makeMove(board);
             Assert.assertNotNull("Minimax should return a move to win", move);
             Assert.assertEquals("Expected winning move at (" + expectedMove.getRow() + "," + expectedMove.getCol() + ")", expectedMove, move);
         }
-    }
 
+    }
     /* ================
      * Test User Player
      * ================ */ 
@@ -193,6 +226,6 @@ public class _JUnit_Players {
 
         user = new User(new MockIntInputReader(occupiedInputs));
         Assert.assertEquals("User should eventually provide a valid move after selecting occupied cells", new Cell(2, 2), user.makeMove(boards[1]));
-        Assert.assertEquals("User should eventually provide a valid move after selecting occupied cells", new Cell(3, 3), user.makeMove(boards[5]));
+        Assert.assertEquals("User should eventually provide a valid move after selecting occupied cells at board\n", new Cell(3, 3), user.makeMove(boards[6]));
     }
 }

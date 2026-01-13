@@ -22,7 +22,36 @@ public class User implements TicTacToePlayer {
 
     @Override
     public Cell makeMove(TicTacToeBoard<?> board) {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (board.isTerminal()){
+            return null;
+        }
+
+        Cell[][] cellStructure = board.getCells();
+
+        int maxRow = cellStructure.length, maxCol = cellStructure[0].length;
+
+        Cell[] emptyCells = board.getEmptyCells();
+
+        while (true){
+            int row, col;
+
+            do {
+                row = inputReader.readInt("Enter the row of your move (1-" + maxRow + "):") - 1;
+            } while (row < 0 || row >= maxRow);
+            
+            do {
+                col = inputReader.readInt("Enter the col of your move (1-" + maxCol + "):") - 1;
+            } while (col < 0 || col >= maxCol);
+
+            Cell userMove = new Cell(row, col);
+
+            // Check if move is valid
+            for (Cell validMove : emptyCells){
+                if (validMove.equals(userMove)){
+                    return userMove;
+                }
+            }
+        }
     }
 
 }
