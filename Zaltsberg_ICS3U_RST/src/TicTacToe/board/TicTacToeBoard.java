@@ -68,6 +68,17 @@ public abstract class TicTacToeBoard <T extends TicTacToeBoard<T>> {
         return Arrays.deepEquals(cells, other.cells);
     }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Cell[] row : cells) {
+            for (Cell cell : row) {
+                sb.append(cell.getValue().toString().charAt(0)).append(" ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
     protected static void normalizeCellPositions(Cell[][] cells) {
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {

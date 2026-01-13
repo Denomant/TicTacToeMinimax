@@ -57,6 +57,10 @@ public final class Cell {
         return row == other.row && col == other.col && value == other.value;
     }
 
+    public String toString() {
+        return "Cell(" + row + ", " + col + ", " + value + ")";
+    }
+
     public int getRow() {
         return row;
     }

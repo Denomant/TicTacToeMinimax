@@ -142,7 +142,6 @@ public class _JUnit_Players {
                 new Cell(1, 1, CellValue.O),
                 new Cell(2, 0, CellValue.X),
                 new Cell(2, 1, CellValue.O),
-                new Cell(3, 0, CellValue.X)
             })),
             // 4x4 Anti-diagonal win for O (X moves for convenience)
             new Board4x4(_JUnit_Boards.generateBoard(4, new Cell[] {
@@ -153,7 +152,6 @@ public class _JUnit_Players {
                 new Cell(2, 0, CellValue.X),
                 new Cell(2, 1, CellValue.O),
                 new Cell(3, 1, CellValue.X),
-                new Cell(3, 0, CellValue.O)
             }))};
 
         Cell[] expectedMoves = new Cell[] {
@@ -168,8 +166,8 @@ public class _JUnit_Players {
             Assert.assertNotNull("Minimax should return a move to win", move);
             Assert.assertEquals("Expected winning move at (" + expectedMove.getRow() + "," + expectedMove.getCol() + ")", expectedMove, move);
         }
-
     }
+
     /* ================
      * Test User Player
      * ================ */ 

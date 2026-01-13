@@ -11,10 +11,11 @@ import java.util.HashMap;
  * Course: ICS3U
  * Minimax.java
  * A class implementing the Minimax algorithm for Tic Tac Toe that always chooses the most optimal move.
+ * Alpha-beta pruning source: https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
  */
 
 public class Minimax implements TicTacToePlayer {
-    // TODO: Add optional constructor that will pre-compute all possible positions of a board in advance
+    // TODO: Canonical board representation
 
     // Helper data class
     private static record MoveValue(Cell move, int score) {}
@@ -96,7 +97,7 @@ public class Minimax implements TicTacToePlayer {
     }
 
     // O Player 
-    private MoveValue minimizer(TicTacToeBoard<?> board) {
+    private MoveValue minimizer(TicTacToeBoard<?> board, int alpha, int beta) {
         if (isBoardInMemory(board)){
             return getFromMemory(board);
         }
@@ -110,21 +111,34 @@ public class Minimax implements TicTacToePlayer {
 
         Cell[] emptyCells = board.getEmptyCells();
         MoveValue bestMove = new MoveValue(NO_MOVE, Integer.MAX_VALUE);
+        Boolean isPruned = false;
 
         for (Cell move : emptyCells){
-            MoveValue result = maximizer(board.moveResult(move));
+            MoveValue result = maximizer(board.moveResult(move), alpha, beta);
 
             if (result.score < bestMove.score){
                 bestMove = new MoveValue(move, result.score);
             }
+
+            // Update beta
+            beta = Math.min(beta, bestMove.score);
+
+            // Prune if current beta makes this move impossible
+            if (beta <= alpha){
+                isPruned = true;
+                break;
+            }
         }
 
-        putInMemory(board, bestMove);
+        if (!isPruned){
+            putInMemory(board, bestMove);
+        }
+
         return bestMove;
     }
 
     // X player
-    private MoveValue maximizer(TicTacToeBoard<?> board) {
+    private MoveValue maximizer(TicTacToeBoard<?> board, int alpha, int beta) {
         if (isBoardInMemory(board)){
             return getFromMemory(board);
         }
@@ -137,16 +151,29 @@ public class Minimax implements TicTacToePlayer {
 
         Cell[] emptyCells = board.getEmptyCells();
         MoveValue bestMove = new MoveValue(NO_MOVE, Integer.MIN_VALUE);
+        Boolean isPruned = false;
 
         for (Cell move : emptyCells){
-            MoveValue result = minimizer(board.moveResult(move));
+            MoveValue result = minimizer(board.moveResult(move), alpha, beta);
 
             if (result.score > bestMove.score){
                 bestMove = new MoveValue(move, result.score);
             }
+
+            // Update alpha
+            alpha = Math.max(alpha, bestMove.score);
+
+            // Prune if current alphas makes this move impossible
+            if (alpha >= beta) {
+                isPruned = true;
+                break;
+            }
         }
 
-        putInMemory(board, bestMove);
+        if (!isPruned){
+            putInMemory(board, bestMove);
+        }
+        
         return bestMove;
     }
 
@@ -162,10 +189,13 @@ public class Minimax implements TicTacToePlayer {
 
         int currentPlayerValue = board.getCurrentPlayer().getValue();
 
+        // Default alpha-beta
+        int alpha = Integer.MIN_VALUE, beta = Integer.MAX_VALUE;
+
         if (currentPlayerValue == CellValue.X.getValue()){
-            return maximizer(board).move;
+            return maximizer(board, alpha, beta).move;
         } else {
-            return minimizer(board).move;
+            return minimizer(board, alpha, beta).move;
         }
     }
 }
