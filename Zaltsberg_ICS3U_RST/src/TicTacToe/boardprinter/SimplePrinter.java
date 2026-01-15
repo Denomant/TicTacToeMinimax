@@ -41,6 +41,9 @@ public final class SimplePrinter implements BoardPrinter{
             }
             result.append("\n");
         }
+        
+        // Remove last newline
+        result.setLength(result.length() - 1);
 
         return result.toString();
     }

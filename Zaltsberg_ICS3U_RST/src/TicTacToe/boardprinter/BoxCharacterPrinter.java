@@ -66,7 +66,7 @@ public final class BoxCharacterPrinter implements BoardPrinter {
             }
         }
 
-        result.append("┘\n");
+        result.append("┘");
 
         return result.toString();
     }

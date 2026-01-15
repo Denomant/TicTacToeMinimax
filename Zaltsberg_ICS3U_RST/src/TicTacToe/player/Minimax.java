@@ -74,13 +74,18 @@ public class Minimax implements TicTacToePlayer {
         if (isBoardInMemory(board)){
             return;
         }
-
+        
         HashMap<? extends TicTacToeBoard<?>, Cell> boardsCells = board.getAllSymmetryCellMappings(moveValue.move);
 
         for(HashMap.Entry<? extends TicTacToeBoard<?>, Cell> entry: boardsCells.entrySet()){
-            int encoded = encodeBoard(entry.getKey());
             Cell move = entry.getValue();
 
+            if (entry.getKey().getCells()[move.getRow()][move.getCol()].getValue() != CellValue.EMPTY) {
+                throw new RuntimeException("Symmetry mapping points to occupied cell! Board: " + entry.getKey() + ", move: " + move + ". Original board: " + board + ", original move: " + moveValue.move);
+            }
+
+            int encoded = encodeBoard(entry.getKey());
+            
             memory.put(encoded, new MoveValue(move, moveValue.score));
         }
         

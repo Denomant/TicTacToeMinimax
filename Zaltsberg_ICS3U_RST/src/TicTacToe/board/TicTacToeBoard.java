@@ -95,6 +95,11 @@ public abstract class TicTacToeBoard <T extends TicTacToeBoard<T>> {
 
     public T moveResult(Cell cell) {
         Cell[][] newCells = getCells();
+
+        if (newCells[cell.getRow()][cell.getCol()].getValue() != CellValue.EMPTY) {
+            throw new IllegalArgumentException("Cell is already occupied. Tried to put " + cell + " in board:\n" + this);
+        }
+
         newCells[cell.getRow()][cell.getCol()] = new Cell(cell.getRow(), cell.getCol(), getCurrentPlayer());
         return create(newCells);
     }
@@ -160,7 +165,7 @@ public abstract class TicTacToeBoard <T extends TicTacToeBoard<T>> {
         return result;
     }
 
-    public Cell getCellReflectedVertically(Cell cell) {
+    public Cell getCellReflectedHorizontally(Cell cell) {
         if (cell == null) {
             return null;
         }
@@ -169,7 +174,7 @@ public abstract class TicTacToeBoard <T extends TicTacToeBoard<T>> {
         return new Cell(cell.getRow(), newCol, cell.getValue());
     }
 
-    public Cell getCellReflectedHorizontally(Cell cell) {
+    public Cell getCellReflectedVertically(Cell cell) {
         if (cell == null) {
             return null;
         }
@@ -226,10 +231,10 @@ public abstract class TicTacToeBoard <T extends TicTacToeBoard<T>> {
 
             // Mirrored rotations
             T rotatedH = rotated.getMirroredHorizontally();
-            map.put(rotatedH, rotated.getCellReflectedHorizontally(rotatedCell));
+            map.put(rotatedH, rotatedH.getCellReflectedHorizontally(rotatedCell));
 
             T rotatedV = rotated.getMirroredVertically();
-            map.put(rotatedV, rotated.getCellReflectedVertically(rotatedCell));
+            map.put(rotatedV, rotatedV.getCellReflectedVertically(rotatedCell));
         }
 
         return map;

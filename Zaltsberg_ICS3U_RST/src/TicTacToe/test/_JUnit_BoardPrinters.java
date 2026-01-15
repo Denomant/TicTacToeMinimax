@@ -86,35 +86,35 @@ public class _JUnit_BoardPrinters {
             // Empty 3x3 board
             "  1  2  3 \n" +
             "  4  5  6 \n" +
-            "  7  8  9 \n",
+            "  7  8  9 ",
 
             // Partially filled 3x3 board
             "  X  2  3 \n" +
             "  4  O  6 \n" +
-            "  7  8  X \n",
+            "  7  8  X ",
 
             // Full 3x3 board
             "  X  O  X \n" +
             "  O  X  O \n" +
-            "  X  O  X \n",
+            "  X  O  X ",
 
             // Empty 4x4 board
             "  1  2  3  4 \n" +
             "  5  6  7  8 \n" +
             "  9 10 11 12 \n" +
-            " 13 14 15 16 \n",
+            " 13 14 15 16 ",
 
             // Partially filled 4x4 board
             "  O  2  3  4 \n" +
             "  5  X  7  8 \n" +
             "  9 10  O 12 \n" +
-            " 13 14 15  X \n",
+            " 13 14 15  X ",
 
             // Full 4x4 board
             "  X  O  X  O \n" +
             "  O  X  O  X \n" +
             "  X  O  X  O \n" +
-            "  O  X  O  X \n"
+            "  O  X  O  X "
         };
 
         BoardPrinter simplePrinter = new SimplePrinter();
@@ -135,7 +135,7 @@ public class _JUnit_BoardPrinters {
             "│   │   │   │\n" +
             "├───┼───┼───┤\n" + 
             "│   │   │   │\n" +
-            "└───┴───┴───┘\n",
+            "└───┴───┴───┘",
 
             // Partially filled 3x3 board
             "┌───┬───┬───┐\n" +
@@ -144,7 +144,7 @@ public class _JUnit_BoardPrinters {
             "│   │ O │   │\n" +
             "├───┼───┼───┤\n" +
             "│   │   │ X │\n" +
-            "└───┴───┴───┘\n",
+            "└───┴───┴───┘",
 
             // Full 3x3 board
             "┌───┬───┬───┐\n" +
@@ -153,7 +153,7 @@ public class _JUnit_BoardPrinters {
             "│ O │ X │ O │\n" +
             "├───┼───┼───┤\n" +
             "│ X │ O │ X │\n" +
-            "└───┴───┴───┘\n",
+            "└───┴───┴───┘",
 
             // Empty 4x4 board
             "┌───┬───┬───┬───┐\n" +
@@ -164,7 +164,7 @@ public class _JUnit_BoardPrinters {
             "│   │   │   │   │\n" +
             "├───┼───┼───┼───┤\n" +
             "│   │   │   │   │\n" +
-            "└───┴───┴───┴───┘\n",
+            "└───┴───┴───┴───┘",
 
             // Partially filled 4x4 board
             "┌───┬───┬───┬───┐\n" +
@@ -175,7 +175,7 @@ public class _JUnit_BoardPrinters {
             "│   │   │ O │   │\n" +
             "├───┼───┼───┼───┤\n" +
             "│   │   │   │ X │\n" +
-            "└───┴───┴───┴───┘\n",
+            "└───┴───┴───┴───┘",
 
             // Full 4x4 board
             "┌───┬───┬───┬───┐\n" +
@@ -186,7 +186,7 @@ public class _JUnit_BoardPrinters {
             "│ X │ O │ X │ O │\n" +
             "├───┼───┼───┼───┤\n" +
             "│ O │ X │ O │ X │\n" +
-            "└───┴───┴───┴───┘\n"
+            "└───┴───┴───┴───┘"
         };
 
         BoardPrinter boxPrinter = new BoxCharacterPrinter();

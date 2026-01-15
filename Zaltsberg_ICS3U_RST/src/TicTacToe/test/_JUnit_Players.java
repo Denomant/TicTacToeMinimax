@@ -112,7 +112,7 @@ public class _JUnit_Players {
             new Board3x3(_JUnit_Boards.generateBoard(3, new Cell[] {
                 new Cell(0, 0, CellValue.X),
                 new Cell(0, 2, CellValue.O),
-                new Cell(1, 0, CellValue.X),
+                new Cell(1, 2, CellValue.X),
                 new Cell(1, 1, CellValue.O),
                 new Cell(2, 1, CellValue.X)
             }))};
@@ -127,7 +127,7 @@ public class _JUnit_Players {
             Cell expectedMove = expectedMoves[i];
             Cell move = minimax3x3.makeMove(board);
             Assert.assertNotNull("Minimax should return a move to win", move);
-            Assert.assertEquals("Expected winning move at (" + expectedMove.getRow() + "," + expectedMove.getCol() + ")", expectedMove, move);
+            Assert.assertEquals("Expected winning move at (" + expectedMove.getRow() + "," + expectedMove.getCol() + "). Board: " + board, expectedMove, move);
         }
     }
 
