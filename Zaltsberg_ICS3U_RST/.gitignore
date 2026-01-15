@@ -1,1 +1,5 @@
 /bin/
+# Gradle build output
+/build/
+# Gradle cache and state
+/.gradle/

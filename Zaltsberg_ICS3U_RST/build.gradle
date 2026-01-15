@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+version = '1.0'
+
+application {
+    mainClass = 'App'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'lib', include: ['*.jar'])
+}
+
+// Jar task to create a fat jar including all dependencies
+jar {
+    manifest {
+        attributes (
+            'Main-Class': 'App',
+            'Class-Path': 'lib/simpleIO.jar'
+        )
+    }
+}
+
+tasks.named('run', JavaExec).configure {
+    // forward the terminal stdin to the Java process so interactive input works
+    standardInput = System.in
+}
