@@ -223,20 +223,9 @@ public abstract class TicTacToeBoard <T extends TicTacToeBoard<T>> {
         T mirroredV = getMirroredVertically();
         map.put(mirroredV, getCellReflectedVertically(cell));
 
-        // Rotations
-        for (int i = 1; i <= 3; i++) {
-            T rotated = getRotated90(i);
-            Cell rotatedCell = getCellRotated90(cell, i);
-            map.put(rotated, rotatedCell);
-
-            // Mirrored rotations
-            T rotatedH = rotated.getMirroredHorizontally();
-            map.put(rotatedH, rotatedH.getCellReflectedHorizontally(rotatedCell));
-
-            T rotatedV = rotated.getMirroredVertically();
-            map.put(rotatedV, rotatedV.getCellReflectedVertically(rotatedCell));
-        }
-
+        T mirroredHV = mirroredH.getMirroredVertically();
+        map.put(mirroredHV, getCellReflectedVertically(getCellReflectedHorizontally(cell)));
+        
         return map;
     }
 
