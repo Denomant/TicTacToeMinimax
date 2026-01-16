@@ -26,8 +26,13 @@ jar {
     manifest {
         attributes (
             'Main-Class': 'App',
-            'Class-Path': 'lib/simpleIO.jar'
         )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        // remove signature files and other manifests from dependency jars
+        exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.EC', 'META-INF/MANIFEST.MF'
     }
 }
 
