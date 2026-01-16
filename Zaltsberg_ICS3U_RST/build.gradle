@@ -21,6 +21,10 @@ dependencies {
     implementation fileTree(dir: 'lib', include: ['*.jar'])
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 // Jar task to create a fat jar including all dependencies
 jar {
     manifest {
