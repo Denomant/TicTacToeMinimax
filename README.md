@@ -163,7 +163,7 @@ src/
 | player.TicTacToePlayer | interface | Uses TicTacToeBoard and Cell | Interface representing a player that selects a Cell given a TicTacToeBoard state. |
 | player.Random | class | Implements TicTacToePlayer | Player implementation that returns a random valid move from the current board. |
 | player.User | class | Implements TicTacToePlayer, uses IntInputReader | Console-based player that prompts for row and column via an injected IntInputReader |
-| player.Minimax | class | Implements TicTacToePlayer | Search-based AI that recursively evaluates the game tree (Minimax), supporting memoization and an evaluator to choose the optimal move. [See In-depth Minimax Explanation](#in-depth-minimax-explanation) |
+| player.Minimax | class | Implements TicTacToePlayer | Search-based AI that recursively evaluates the game tree (Minimax), supporting optimized memoization to choose the optimal move. [See In-depth Minimax Explanation](#in-depth-minimax-explanation) |
 | input.IntInputReader | interface | None | Interface for reading integer input (abstracts input source for testing). |
 | input.ConsoleIntInputReader | class | Implements IntInputReader | Console implementation using the simpleIO library to read integers |
 | input.MockIntInputReader | class | Implements IntInputReader | Test implementation that returns a predetermined sequence of integers supplied at construction (for automated tests). |
@@ -180,7 +180,7 @@ To improve performance, the AI uses aggressive memoization through compact board
 
 This allows an entire 4x4 board to fit inside one integer value resulting in roughly a **48:1** memory optimization. In addition, board symmetries are exploited using `getAllSymmetryCellMappings`, meaning all reflected versions of the same position all stored at the same time, increasing speed by up to **four times**.
 
-And finally, the algorithm uses alpha–beta pruning to eliminate branches of the game tree that cannot influence the final decision. By tracking the best guaranteed outcomes for both players, the AI can stop evaluating moves once they are proven to be worse than an already known alternative. This significantly reduces the number of recursive calls while preserving perfect-play accuracy. According to Wikipedia, in worst case scenario this does not affect search at all, and in best case scenario it `square-roots` the amount of explored branches.
+And finally, the algorithm uses alpha–beta pruning to eliminate branches of the game tree that cannot influence the final decision. By tracking the best guaranteed outcomes for both players, the AI can stop evaluating moves once they are proven to be worse than an already known alternative. This significantly reduces the number of recursive calls while preserving perfect-play accuracy. According to Wikipedia, in worst case scenario this does not affect search at all, and in best case scenario it **square-roots** the amount of explored branches.
 
 ## What's Next
 This project is not considered finished and is planned to be extended further as part of my ICS4U RST next semester.
