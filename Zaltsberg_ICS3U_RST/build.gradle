@@ -15,6 +15,12 @@ sourceSets {
             srcDirs = ['src']
         }
     }
+
+    test {
+        java {
+            srcDirs = ["src/TicTacToe/test"]
+        }
+    }
 }
 
 dependencies {
