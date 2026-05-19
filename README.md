@@ -9,7 +9,7 @@
 4. [Technical Breakdown](#technical-breakdown)
     - [Project Architecture](#project-architecture)
     - [In-depth Minimax Explanation](#in-depth-minimax-explanation)
-5. [What's Next](#what's-next)
+5. [What's Next](#whats-next)
 
 ## Project Overview
 A TicTacToe project developed as a Java-based addition to my programming portfolio.  
@@ -163,7 +163,7 @@ src/
 | player.TicTacToePlayer | interface | Uses TicTacToeBoard and Cell | Interface representing a player that selects a Cell given a TicTacToeBoard state. |
 | player.Random | class | Implements TicTacToePlayer | Player implementation that returns a random valid move from the current board. |
 | player.User | class | Implements TicTacToePlayer, uses IntInputReader | Console-based player that prompts for row and column via an injected IntInputReader |
-| player.Minimax | class | Implements TicTacToePlayer | Search-based AI that recursively evaluates the game tree (Minimax), supporting optimized memoization to choose the optimal move. [See In-depth Minimax Explanation](#in-depth-minimax-explanation) |
+| player.Minimax | class | Implements TicTacToePlayer | Search-based AI that recursively evaluates the game tree (Minimax), supporting optimized memorization to choose the optimal move. [See In-depth Minimax Explanation](#in-depth-minimax-explanation) |
 | input.IntInputReader | interface | None | Interface for reading integer input (abstracts input source for testing). |
 | input.ConsoleIntInputReader | class | Implements IntInputReader | Console implementation using the simpleIO library to read integers |
 | input.MockIntInputReader | class | Implements IntInputReader | Test implementation that returns a predetermined sequence of integers supplied at construction (for automated tests). |
