@@ -1,5 +1,3 @@
-package TicTacToe.test;
-
 import org.junit.Before;
 
 import java.util.HashMap;
