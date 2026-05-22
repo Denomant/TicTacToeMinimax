@@ -1,6 +1,11 @@
 plugins {
     id 'java'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+repositories {
+    mavenCentral()
 }
 
 version = '1.0'
@@ -9,13 +14,17 @@ application {
     mainClass = 'App'
 }
 
+javafx {
+    version = '21'
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
 sourceSets {
     main {
         java {
             srcDirs = ['src']
         }
     }
-
     test {
         java {
             srcDirs = ["src/TicTacToe/test"]
@@ -31,7 +40,6 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-// Jar task to create a fat jar including all dependencies
 jar {
     manifest {
         attributes (
@@ -41,12 +49,10 @@ jar {
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     } {
-        // remove signature files and other manifests from dependency jars
         exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.EC', 'META-INF/MANIFEST.MF'
     }
 }
 
 tasks.named('run', JavaExec).configure {
-    // forward the terminal stdin to the Java process so interactive input works
     standardInput = System.in
 }

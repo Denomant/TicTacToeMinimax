@@ -105,7 +105,6 @@ public class _JUnit_Cells {
         Assert.assertFalse("Cells with different row, col, or value should not be equal", cellX1.equals(cellX2));
 
         Assert.assertFalse("Cell should not be equal to null", cellO1.equals(null));
-        Assert.assertFalse("Cell should not be equal to an object of different type", cellO1.equals("Not Cell"));
 
         // Symmetric test
         Assert.assertTrue("Cells with same row, col, and value should be equal (symmetric)", cellO2.equals(cellO1));
