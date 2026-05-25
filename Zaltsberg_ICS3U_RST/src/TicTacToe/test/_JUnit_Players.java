@@ -9,12 +9,11 @@ import TicTacToe.board.*;
 import TicTacToe.player.*;
 
 /**
- * @author Denis Zaltsberg
- * Date: 20/12/25
- * Course: ICS3U
- * _JUnit_Players.java
  * A JUnit test class for testing player interactions in Tic Tac Toe.
- */
+ * _JUnit_Players.java
+ * @author Denis Zaltsberg
+ * @date 24/05/2026
+*/
 
 public class _JUnit_Players {
     /* ==============

@@ -14,11 +14,10 @@ import TicTacToe.model.Cell;
 import TicTacToe.model.CellValue;
 
 /**
- * @author Denis Zaltsberg
- * Date: 18/12/25
- * Course: ICS3U
+ * A JUnit test for the TicTacToeBoard abstract class behavior, and all of its child classes (3x3, and 4x4).
  * _JUnit_Boards.java
- * A JUnit test for the TicTacToeBoard abstract class behavior, and all of its child classes (3x3, and 4x4). 
+ * @author Denis Zaltsberg
+ * @date 24/05/2026
 */
 
 public class _JUnit_Boards {

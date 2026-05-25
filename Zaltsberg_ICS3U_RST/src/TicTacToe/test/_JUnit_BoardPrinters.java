@@ -7,13 +7,11 @@ import TicTacToe.board.*;
 import TicTacToe.model.*;
 
 /**
- * @author Denis Zaltsberg
- * Date: 20/12/25
- * Course: ICS3U
- * _JUnit_BoardPrinters.java
  * A JUnit test class for testing board printers in Tic Tac Toe.
- */
-
+ * _JUnit_BoardPrinters.java
+ * @author Denis Zaltsberg
+ * @date 24/05/2026
+*/
 
 public class _JUnit_BoardPrinters {
     TicTacToeBoard<?>[] boards;

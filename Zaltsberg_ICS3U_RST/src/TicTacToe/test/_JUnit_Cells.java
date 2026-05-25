@@ -5,11 +5,10 @@ import TicTacToe.model.Cell;
 import TicTacToe.model.CellValue;
 
 /**
- * @author Denis Zaltsberg
- * Date: 17/12/25
- * Course: ICS3U
- * _JUnit_Cells.java
  * A JUnit test class for the Cell and CellValue classes.
+ * _JUnit_Cells.java
+ * @author Denis Zaltsberg
+ * @date 24/05/2026
 */
 
 public class _JUnit_Cells {
