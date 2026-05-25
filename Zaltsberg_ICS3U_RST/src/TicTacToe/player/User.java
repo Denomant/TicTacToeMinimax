@@ -6,20 +6,28 @@ import TicTacToe.model.Cell;
 import TicTacToe.input.*;
 
 /**
- * @author Denis Zaltsberg
- * Date: 16/12/25
- * Course: ICS3U
+ * A class implementing a user Tic Tac Toe player who makes a move based on console input. <br>
+ * May be used with any implementation of IntInputReader. <br>
  * User.java
- * A class representing a user player in Tic Tac Toe who makes a move using the console.
- */
+ * @author Denis Zaltsberg
+ * @date 24/05/2026
+*/
 
 public class User implements TicTacToePlayer {
     private final IntInputReader inputReader;
 
+    /**
+     * Constructor for User player. <br>
+     * Abstracts the input method. <br>
+     * @param inputReader An implementation of IntInputReader to read user input from.
+     */
     public User(IntInputReader inputReader) {
         this.inputReader = inputReader;
     }
 
+    /**
+     * @return a move based on user input.
+     */
     @Override
     public Cell makeMove(TicTacToeBoard<?> board) {
         if (board.isTerminal()){

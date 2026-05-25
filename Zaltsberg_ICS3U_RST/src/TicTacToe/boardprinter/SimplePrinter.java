@@ -4,18 +4,23 @@ import TicTacToe.board.TicTacToeBoard;
 import TicTacToe.model.*;
 
 /**
- * @author Denis Zaltsberg
- * Date: 16/12/25
- * Course: ICS3U
+ * A class for printing the Tic Tac Toe board using spaces to separate cells. <br>
  * SimplePrinter.java
- * A simple implementation of the BoardPrinter interface.
+ * @author Denis Zaltsberg
+ * @date 24/05/2026
+ */
+
+/*
  * Output format:
  * 1 2 3
  * X 5 6
  * 7 O 9
- */
+*/
 
 public final class SimplePrinter implements BoardPrinter{
+    /**
+     * @return A string representation of the board, with spaces between cells and newlines between rows.
+     */
     @Override
     public String render(TicTacToeBoard<?> board) {
         StringBuilder result = new StringBuilder("");

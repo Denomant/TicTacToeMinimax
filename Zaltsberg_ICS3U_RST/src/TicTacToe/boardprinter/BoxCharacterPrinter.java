@@ -4,13 +4,15 @@ import TicTacToe.board.TicTacToeBoard;
 import TicTacToe.model.*;
 
 /**
- * @author Denis Zaltsberg
- * Date: 16/12/25
- * Course: ICS3U
+ * A class for printing the Tic Tac Toe board using box characters. <br>
  * BoxCharacterPrinter.java
- * A class for printing the Tic Tac Toe board using box characters.
+ * @author Denis Zaltsberg
+ * @date 24/05/2026
+ */
+
+/*
  * Output format:
- * ┌───┬───┬───┐
+ * ┌───┬───┬───┐ 
  * │   │   │ O │
  * ├───┼───┼───┤
  * │ X │   │ O │
@@ -19,6 +21,10 @@ import TicTacToe.model.*;
  * └───┴───┴───┘
  */
 public final class BoxCharacterPrinter implements BoardPrinter {
+    
+    /**
+     * @return A string representation of the board using box characters.
+     */
     @Override
     public String render(TicTacToeBoard<?> board) {
         StringBuilder result = new StringBuilder();

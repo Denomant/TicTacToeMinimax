@@ -6,13 +6,12 @@ import TicTacToe.model.CellValue;
 import java.util.HashMap;
 
 /**
- * @author Denis Zaltsberg
- * Date: 16/12/25
- * Course: ICS3U
+ * A class implementing the Minimax algorithm for Tic Tac Toe that always chooses the most optimal move. <br>
+ * Alpha-beta pruning source: https://en.wikipedias.org/wiki/Alpha%E2%80%93beta_pruning <br>
  * Minimax.java
- * A class implementing the Minimax algorithm for Tic Tac Toe that always chooses the most optimal move.
- * Alpha-beta pruning source: https://en.wikipedias.org/wiki/Alpha%E2%80%93beta_pruning
- */
+ * @author Denis Zaltsberg
+ * @date 24/05/2026
+*/
 
 public class Minimax implements TicTacToePlayer {
     // Helper data class
@@ -25,11 +24,17 @@ public class Minimax implements TicTacToePlayer {
     /*=====================
       Helper memory methods
       =====================*/
+    /**
+     * Encodes the board into an int for use as a key in the memory HashMap. <br>
+     * Bitboard encoding of the board. <br>
+     * @param board The board to encode. Must be 4x4 or smaller.
+     * @return An int representing the board state.
+     */
     private static int encodeBoard(TicTacToeBoard<?> board) {
         /*
         Every cell can be represented by 2 bits (3 possible states (X, O, EMPTY) + 1 unused state).
         Therefore, a board with n cells can be represented by 2n bits.
-        int has 32 bits, therefore 4x4 board can perfectly fit in an int.
+        int has 32 bits, therefore 4x4 (16 cells) board can perfectly fit in an int.
         */
         /*
         Establish:
@@ -65,6 +70,12 @@ public class Minimax implements TicTacToePlayer {
         return result;
     }
 
+    /**
+     * Puts the given board and move value in memory, along with all of its symmetries. <br>
+     * Skips terminal boards since they take up too much space and are not worth storing for efficiency. <br>
+     * @param board The board to put in memory.
+     * @param moveValue The best move at the current board state and its score.
+     */
     private void putInMemory(TicTacToeBoard<?> board, MoveValue moveValue){
         // Terminal boards take too much space, but are not worth storing for efficiency
         if (moveValue.move == NO_MOVE){
@@ -91,15 +102,32 @@ public class Minimax implements TicTacToePlayer {
         
     }
 
+    /**
+     * Checks if the given board state is already in memory. <br>
+     * @param board The board to check.
+     * @return True if the board is in memory, false otherwise.
+     */
     private boolean isBoardInMemory(TicTacToeBoard<?> board){
         return memory.containsKey(encodeBoard(board));
     }
 
+    /**
+     * Gets the move value for the given board from memory. <br>
+     * @param board The board to get the move value for. 
+     * @return The best move value for the given board from memory. 
+     */
     private MoveValue getFromMemory(TicTacToeBoard<?> board){
         return memory.get(encodeBoard(board));
     }
 
-    // O Player 
+    /**
+     * Minimizer function for the Minimax algorithm. <br>
+     * Represents the O player trying to minimize the score. <br>
+     * @param board The current board state. 
+     * @param alpha The alpha value for alpha-beta pruning. 
+     * @param beta The beta value for alpha-beta pruning. 
+     * @return The best move value for the given board from memory. 
+     */
     private MoveValue minimizer(TicTacToeBoard<?> board, int alpha, int beta) {
         if (isBoardInMemory(board)){
             return getFromMemory(board);
@@ -140,7 +168,14 @@ public class Minimax implements TicTacToePlayer {
         return bestMove;
     }
 
-    // X player
+    /**
+     * Maximizer function for the Minimax algorithm. <br>
+     * Represents the X player trying to maximize the score. <br>
+     * @param board The current board state.
+     * @param alpha The alpha value for alpha-beta pruning.
+     * @param beta The beta value for alpha-beta pruning.
+     * @return The best move value for the given board from memory.
+     */
     private MoveValue maximizer(TicTacToeBoard<?> board, int alpha, int beta) {
         if (isBoardInMemory(board)){
             return getFromMemory(board);
@@ -180,6 +215,9 @@ public class Minimax implements TicTacToePlayer {
         return bestMove;
     }
 
+    /**
+     * @return the best move for the current board state using the Minimax algorithm with alpha-beta pruning.
+     */
     @Override
     public Cell makeMove(TicTacToeBoard<?> board) {
         if (isBoardInMemory(board)){

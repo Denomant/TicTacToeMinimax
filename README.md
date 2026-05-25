@@ -69,7 +69,7 @@ For macOS users, or for developers who wish to modify the code and rebuild the p
 ---
 
 ### How to Build
-You will need [Java version 17](https://www.java.com/en/download/manual.jsp) and [Git](https://git-scm.com/install/) installed on your system.
+You will need [Java version 21](https://www.java.com/en/download/manual.jsp) and [Git](https://git-scm.com/install/) installed on your system.
 
 - To check your Java version:
 ```bash

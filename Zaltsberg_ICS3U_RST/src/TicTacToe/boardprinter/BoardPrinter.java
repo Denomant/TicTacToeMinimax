@@ -3,13 +3,17 @@ package TicTacToe.boardprinter;
 import TicTacToe.board.TicTacToeBoard;
 
 /**
- * @author Denis Zaltsberg
- * Date: 16/12/25
- * Course: ICS3U
+ * An interface for converting a TicTacToeBoard into a printable string. <br>
  * BoardPrinter.java
- * An interface for printing the Tic Tac Toe board.
- */
+ * @author Denis Zaltsberg
+ * @date 24/05/2026
+*/
 
 public interface BoardPrinter {
+    /**
+     * Renders the given TicTacToeBoard into a string representation.
+     * @param board The TicTacToeBoard to be rendered.
+     * @return A string representation of the board.
+     */
     String render(TicTacToeBoard<?> board);
 }

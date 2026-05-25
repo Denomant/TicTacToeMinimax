@@ -1,17 +1,24 @@
 package TicTacToe.model;
 
 /**
- * @author Denis Zaltsberg
- * Date: 16/12/25
- * Course: ICS3U
+ * A class representing a single cell on the Tic-Tac-Toe board. <br>
+ * A cell is immutable and contains its row, column, and value (X, O, or EMPTY). <br>
  * Cell.java
- * An immutable class cell representing a single cell on the Tic Tac Toe board.
- */
+ * @author Denis Zaltsberg
+ * @date 24/05/2026
+*/
 
-public final class Cell {
+public class Cell {
     private final int row, col;
     private final CellValue value;
 
+    /**
+     * Constructs a Cell with the specified row, column, and value. <br>
+     * @param row The row of the cell.
+     * @param col The column of the cell.
+     * @param value The value of the cell.
+     * @throws IllegalArgumentException if row or col is negative, or if value is null
+     */
     public Cell(int row, int col, CellValue value) {
         if (row < 0 || col < 0 || value == null) {
             throw new IllegalArgumentException("Invalid cell parameters");
@@ -21,6 +28,12 @@ public final class Cell {
         this.value = value;
     }
 
+    /**
+     * Constructs a Cell with the specified row and column, and an EMPTY value. <br>
+     * @param row The row of the cell.
+     * @param col The column of the cell.
+     * @throws IllegalArgumentException if row or col is negative.
+     */
     public Cell(int row, int col) {
         this(row, col, CellValue.EMPTY);
     }
@@ -57,30 +70,55 @@ public final class Cell {
         return row == other.row && col == other.col && value == other.value;
     }
 
+    @Override
     public String toString() {
         return "Cell(" + row + ", " + col + ", " + value + ")";
     }
 
+    /**
+     * Gets the row of the cell. <br>
+     * @return The row of the cell.
+     */
     public int getRow() {
         return row;
     }
 
+    /**
+     * Gets the column of the cell. <br>
+     * @return The column of the cell.
+     */
     public int getCol() {
         return col;
     }
 
+    /**
+     * Gets the value of the cell. <br>
+     * @return The value of the cell.
+     */
     public CellValue getValue() {
         return value;
     }
 
+    /**
+     * Gets the character representation of the cell's value. <br>
+     * @return The character representing the cell's value.
+     */
     public char getValueCharacter() {
         return value.getCharacter();
     }
 
+    /**
+     * Gets the string representation of the cell's value. <br>
+     * @return The string representing the cell's value.
+     */
     public String getValueString() {
         return Character.toString(value.getCharacter()); 
     }
 
+    /**
+     * Checks if the cell is empty. <br>
+     * @return true if the cell is EMPTY, false otherwise.
+     */
     public boolean isEmpty() {
         return value == CellValue.EMPTY;
     }
