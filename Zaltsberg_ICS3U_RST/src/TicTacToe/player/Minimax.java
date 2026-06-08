@@ -15,11 +15,11 @@ import java.util.HashMap;
 
 public class Minimax implements TicTacToePlayer {
     // Helper data class
-    private static record MoveValue(Cell move, int score) {}
+    protected static record MoveValue(Cell move, int score) {}
     // Placeholder
     private static final Cell NO_MOVE = null;
     // Memory
-    private final HashMap<Integer, MoveValue> memory = new HashMap<>();
+    protected final HashMap<Integer, MoveValue> memory = new HashMap<>();
 
     /*=====================
       Helper memory methods

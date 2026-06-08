@@ -8,12 +8,12 @@ import TicTacToe.model.CellValue;
 
 
 /**
- * @author sDenis Zaltsberg
- * Date: 13/1/26
- * Course: ICS3U
+ * The main application class for the Tic Tac Toe game. <br>
+ * Handles the configuration and the game loop. <br>
  * App.java
- * The main application class.
- */
+ * @author Denis Zaltsberg
+ * @date 8/06/2026
+*/
 
 public class App {
     private static TicTacToeBoard<?> initialBoard;
@@ -43,10 +43,16 @@ public class App {
                 case 2:
                     running = false;
                     Console.print("Thanks for playing Tic-Tac-Toe! Goodbye!");
+                    if (players[1] instanceof PersistentMinimax){
+                        ((PersistentMinimax) players[1]).saveMemory();
+                    }
                     break;
                 default:
                     Console.print("Invalid option, exiting the game.");
                     running = false;
+                    if (players[1] instanceof PersistentMinimax){
+                        ((PersistentMinimax) players[1]).saveMemory();
+                    }
                     break;
             };
         }
@@ -106,7 +112,7 @@ public class App {
                     players[1] = new Random();
                     break;
                 case 3:
-                    players[1] = new Minimax();
+                    players[1] = new PersistentMinimax();
                     Console.print("Preparing AI...\nThis might take up to a minute depending on the board size.");
                     players[1].makeMove(initialBoard); // Explore some of the branches
                     break;
