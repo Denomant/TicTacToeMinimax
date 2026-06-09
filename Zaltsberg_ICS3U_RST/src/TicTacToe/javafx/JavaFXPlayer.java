@@ -12,4 +12,7 @@ public class JavaFXPlayer implements TicTacToePlayer {
         return null;
     }
 
+    public void trigger(Cell cell){
+        // TODO Fix stub
+    } 
 }
