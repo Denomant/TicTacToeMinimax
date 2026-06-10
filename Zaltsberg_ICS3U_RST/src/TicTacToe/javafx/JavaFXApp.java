@@ -1,8 +1,7 @@
 package TicTacToe.javafx;
 
-import TicTacToe.board.TicTacToeBoard;
+import TicTacToe.board.*;
 import TicTacToe.model.*;
-import TicTacToe.board.Board4x4;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -25,15 +24,18 @@ public class JavaFXApp extends Application {
     private GridPane grid;
 
     // Colors
-    private final String RGB_GRID_GAPS = "#555555";
-    private final String RGB_BACKGROUND = "#1a1a2e"; 
+    private static final String RGB_GRID_GAPS = "#555555";
+    private static final String RGB_BACKGROUND = "#1a1a2e"; 
+    private static final String RGB_CELL_IDLE = "#16213e"; 
+    private static final String RGB_CELL_HOVER = "#0f3460"; 
+
     
     // Temp for testing.
     // TODO: Remove
     public JavaFXApp(){
         this.player = new JavaFXPlayer();
         this.printer = new JavaFXPrinter();
-        this.initialBoard = new Board4x4();
+        this.initialBoard = new Board3x3();
     }
     /**
      * TODO:
@@ -70,13 +72,17 @@ public class JavaFXApp extends Application {
         stage.show();
     }
 
+    /**
+     * Builds the GridPane representing the board, with buttons for each cell.
+     * @return The constructed GridPane for the board, with buttons for each cell.
+     */
     private GridPane buildBoardGrid(){
         GridPane grid = new GridPane();
         grid.setHgap(6);
         grid.setVgap(6);
         grid.setPadding(new Insets(6));
-        grid.setMinWidth(100);
-        grid.setMinHeight(100);
+        grid.setMinWidth(300);
+        grid.setMinHeight(300);
         grid.setStyle("-fx-background-color: " + RGB_GRID_GAPS + ";");
 
         Cell[][] cells = initialBoard.getCells();
@@ -107,9 +113,9 @@ public class JavaFXApp extends Application {
                 Button btn = new Button();
 
                 btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                //btn.setStyle(cellStyle(false));
-                //btn.setOnMouseEntered(e -> btn.setStyle(cellStyle(true)));
-                //btn.setOnMouseExited(e  -> btn.setStyle(cellStyle(false)));
+                btn.setStyle(cellStyle(false));
+                btn.setOnMouseEntered(e -> btn.setStyle(cellStyle(true)));
+                btn.setOnMouseExited(e -> btn.setStyle(cellStyle(false)));
                 btn.setOnAction(e -> player.trigger(cell));
 
                 grid.add(btn, col, row);
@@ -117,6 +123,17 @@ public class JavaFXApp extends Application {
         }
 
         return grid;
+    }
+
+    /**
+     * Inline style for a board cell button.
+     * @param hovered Whether the mouse is currently hovering over the button. Defines the color.
+     * @return The inline CSS style string for a board cell button, based on the hovered state.
+     */
+    private static String cellStyle(boolean hovered) {
+        return "-fx-background-color: " + (hovered ? RGB_CELL_HOVER : RGB_CELL_IDLE) + ";"
+             + "-fx-background-radius: 0;"
+             + "-fx-cursor: hand;";
     }
 
     public static void main(String[] args){
