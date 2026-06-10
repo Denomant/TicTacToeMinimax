@@ -148,6 +148,10 @@ public class JavaFXApp extends Application {
              + "-fx-cursor: " + (hovered ? "hand" : "auto") + ";";
     }
 
+    /**
+     * Builds the control panel on the right side of the screen, containing the turn label and undo button.
+     * @return The constructed BorderPane for the control panel, with the turn label and undo button.
+     */
     private BorderPane buildControlPanel(){
         BorderPane controlPanel = new BorderPane();
         controlPanel.setMinWidth(600);
@@ -196,6 +200,7 @@ public class JavaFXApp extends Application {
 
         return controlPanel;
     }
+    
     public static void main(String[] args){
         launch(args);
     }
