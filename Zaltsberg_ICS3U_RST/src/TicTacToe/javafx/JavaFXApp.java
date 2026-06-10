@@ -20,9 +20,9 @@ import javafx.stage.Stage;;
 
 public class JavaFXApp extends Application {
     // Dependencies
-    private final JavaFXPlayer player;
-    private final JavaFXPrinter printer;
-    private final TicTacToeBoard<?> initialBoard;
+    private static JavaFXPlayer player;
+    private static JavaFXPrinter printer;
+    private static TicTacToeBoard<?> initialBoard;
     
     private GridPane grid;
     private Label turnLabel;
@@ -39,16 +39,22 @@ public class JavaFXApp extends Application {
     private static final String FONT = "'Courier New', Courier, monospace";
 
     /**
-     * Initializes the JavaFXApp with the given player, printer, and initial board state. <br>
-     * Ensures the launch() method has access to the necessary dependencies for the JavaFX application to function properly.
+     * Default constructor for JavaFXApp. Required for JavaFX applications, but does not perform any initialization logic itself. <br>
+     * MUST call setDependencies() before launch() to ensure the JavaFX application has access to the necessary dependencies for rendering and game logic.
+     */
+    public JavaFXApp(){
+    }
+
+    /**
+     * Sets the dependencies for the JavaFXApp, including the player, printer, and initial board state. <br>
      * @param player The JavaFXPlayer instance responsible for handling user input and game logic interactions.
      * @param printer The JavaFXPrinter instance responsible for rendering the game board.
      * @param initialBoard The initial state of the Tic-Tac-Toe board.
      */
-    public JavaFXApp(JavaFXPlayer player, JavaFXPrinter printer, TicTacToeBoard<?> initialBoard){
-        this.player = player;
-        this.printer = printer;
-        this.initialBoard = initialBoard;
+    public static void setDependencies(JavaFXPlayer p, JavaFXPrinter pr, TicTacToeBoard<?> iB){
+        player = p;
+        printer = pr;
+        initialBoard = iB;
     }
 
     @Override
@@ -193,9 +199,5 @@ public class JavaFXApp extends Application {
         controlPanel.setCenter(body);
 
         return controlPanel;
-    }
-    
-    public static void main(String[] args){
-        launch(args);
     }
 }

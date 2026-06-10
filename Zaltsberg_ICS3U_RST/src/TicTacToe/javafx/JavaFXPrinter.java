@@ -6,30 +6,32 @@ import TicTacToe.boardprinter.BoardPrinter;
 import javafx.scene.layout.GridPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 
 public class JavaFXPrinter implements BoardPrinter{
-    private final Image X_IMG;
-    private final Image O_IMG;
+    private Image X_IMG;
+    private Image O_IMG;
     private GridPane grid;
 
     private ImageView[][] cache; // Cache for ImageViews to avoid creating new ones every render call.
     
     /**
-     * Initializes the JavaFXPrinter by loading the X and O images from the resources folder.
+     * Initializes the JavaFXPrinter.
      */
     public JavaFXPrinter(){
-        X_IMG = new Image(getClass().getResource("/images/x.png").toString());
-        O_IMG = new Image(getClass().getResource("/images/o.png").toString());
     }
 
     /**
-     * Connects the JavaFXPrinter to the GridPane used for displaying the board. 
+     * Connects the JavaFXPrinter to the GridPane used for displaying the board. <br>
+     * Loads the X and O images from the resources <br>
      * @param grid GridPane filled with buttons, used for displaying the board state.
      */
     public void connect(GridPane grid){
         this.grid = grid;
+        X_IMG = new Image(getClass().getResource("/images/x.png").toString());
+        O_IMG = new Image(getClass().getResource("/images/o.png").toString());
     }
 
     @Override
@@ -61,7 +63,7 @@ public class JavaFXPrinter implements BoardPrinter{
                     
 
                     // Attach it to the button and store it in cache
-                    btn.setGraphic(imgView);
+                    Platform.runLater(() -> btn.setGraphic(imgView)); // Ensure this runs on the JavaFX Application Thread
                     cache[row][col] = imgView;
                 }
             }

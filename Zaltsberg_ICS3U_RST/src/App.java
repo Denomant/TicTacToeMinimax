@@ -4,7 +4,9 @@ import TicTacToe.board.*;
 import TicTacToe.boardprinter.*;
 import TicTacToe.player.*;
 import TicTacToe.input.*;
+import TicTacToe.javafx.*;
 import TicTacToe.model.CellValue;
+import javafx.application.Application;
 
 
 /**
@@ -21,6 +23,7 @@ public class App {
     private static BoardPrinter printer;
     private static IntInputReader inputReader= new ConsoleIntInputReader();
     private static TicTacToePlayer[] players = new TicTacToePlayer[2];
+    private static JavaFXApp javafx;
 
     public static void main(String[] args) { 
         boolean running = true;
@@ -74,17 +77,26 @@ public class App {
             break;
         }
 
-        // Printer
+        // Printer + main player
         while (true) {
             Console.print("What kind of printing style do you prefer?");
-            userChoice = inputReader.readInt("1) Simple\n2) Fancy (box-drawing characters might not be supported by all terminals)\n");
+            userChoice = inputReader.readInt("1) Simple\n2) Fancy (box-drawing characters might not be supported by all terminals)\n3) JavaFX (graphical)\n");
 
             switch (userChoice) {
                 case 1:
                     printer = new SimplePrinter();
+                    players[0] = new User(inputReader);
                     break;
                 case 2:
                     printer = new BoxCharacterPrinter();
+                    players[0] = new User(inputReader);
+                    break;
+                case 3:
+                    printer = new JavaFXPrinter();
+                    players[0] = new JavaFXPlayer();
+                    JavaFXApp.setDependencies((JavaFXPlayer) players[0], (JavaFXPrinter) printer, initialBoard);
+                    // Launch JavaFX in a background thread so the console doesn't freeze
+                    new Thread(() -> Application.launch(JavaFXApp.class, new String[0])).start();
                     break;
                 default:
                     continue;
@@ -92,8 +104,7 @@ public class App {
             break;
         }
 
-        // Player and opponents.
-        players[0] = new User(inputReader);
+        // Opponent.
         while (true) {
             Console.print("Who do you want to play against?");
             userChoice = inputReader.readInt("1) Another Player (turn-based local multiplayer using the same PC)\n2) Simple AI\n3) Impossible AI\n");
