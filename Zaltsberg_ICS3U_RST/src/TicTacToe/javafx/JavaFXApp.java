@@ -3,11 +3,14 @@ package TicTacToe.javafx;
 import TicTacToe.board.*;
 import TicTacToe.model.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
@@ -22,14 +25,19 @@ public class JavaFXApp extends Application {
     private final TicTacToeBoard<?> initialBoard;
     
     private GridPane grid;
+    private Label turnLabel;
+    private Button undoBtn;
 
     // Colors
     private static final String RGB_GRID_GAPS = "#555555";
     private static final String RGB_BACKGROUND = "#1a1a2e"; 
     private static final String RGB_CELL_IDLE = "#16213e"; 
-    private static final String RGB_CELL_HOVER = "#0f3460"; 
+    private static final String RGB_CELL_HOVER = "#0f3460";
+    private static final String RGB_EXIT_RED = "#8c3a3a";
+    private static final String RGB_BTN_BACK = "#1f4068";
+    private static final String RGB_TEXT = "#eeeeee";
+    private static final String FONT = "'Courier New', Courier, monospace";
 
-    
     // Temp for testing.
     // TODO: Remove
     public JavaFXApp(){
@@ -59,8 +67,7 @@ public class JavaFXApp extends Application {
         HBox.setHgrow(grid, Priority.ALWAYS);   // consume all remaining width
         printer.connect(grid);
 
-        BorderPane controlPanel = new BorderPane(); // TODO: Fix stub
-        controlPanel.setMinWidth(600);
+        BorderPane controlPanel = buildControlPanel();
 
         root.getChildren().addAll(grid, controlPanel);
 
@@ -141,6 +148,54 @@ public class JavaFXApp extends Application {
              + "-fx-cursor: " + (hovered ? "hand" : "auto") + ";";
     }
 
+    private BorderPane buildControlPanel(){
+        BorderPane controlPanel = new BorderPane();
+        controlPanel.setMinWidth(600);
+        controlPanel.setPadding(new Insets(16));
+
+        Button exitBtn = new Button("X");
+        exitBtn.setStyle(
+                "-fx-font-size: 24px;"
+              + "-fx-font-weight: bold;"
+              + "-fx-font-family: " + FONT   + ";"
+              + "-fx-background-color: " + RGB_EXIT_RED + ";"
+              + "-fx-text-fill: " + RGB_TEXT +";"
+              + "-fx-padding: 4 10 4 10;"
+              + "-fx-cursor: hand;");
+        exitBtn.setOnAction(e -> Platform.exit()); // TODO: Tie to saving Minimax
+        BorderPane.setAlignment(exitBtn, Pos.TOP_RIGHT);
+        controlPanel.setTop(exitBtn);
+
+        // Body
+        VBox body = new VBox(24);
+        body.setAlignment(Pos.CENTER);
+
+        turnLabel = new Label("It is X's Turn");
+        turnLabel.setStyle(
+                "-fx-font-size: 20px;"
+              + "-fx-font-weight: bold;"
+              + "-fx-font-family: " + FONT + ";"
+              + "-fx-text-fill: " + RGB_TEXT + ";");
+        turnLabel.setWrapText(true);
+        turnLabel.setAlignment(Pos.CENTER);
+
+        undoBtn = new Button("Undo Move");
+        undoBtn.setMaxWidth(Double.MAX_VALUE);
+        undoBtn.setStyle(
+                "-fx-font-size: 24px;"
+              + "-fx-font-weight: bold;"
+              + "-fx-font-family: " + FONT  + ";"
+              + "-fx-text-fill: " + RGB_TEXT + ";"
+              + "-fx-background-color: " + RGB_BTN_BACK + ";"
+              + "-fx-padding: 10 20 10 20;"
+              + "-fx-cursor: hand;");
+        // TODO: Undo logic
+
+        body.getChildren().addAll(turnLabel, undoBtn);
+        controlPanel.setCenter(body);
+
+        return controlPanel;
+    }
     public static void main(String[] args){
         launch(args);
     }
