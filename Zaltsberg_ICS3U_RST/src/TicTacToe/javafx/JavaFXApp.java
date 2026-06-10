@@ -116,7 +116,12 @@ public class JavaFXApp extends Application {
                 btn.setStyle(cellStyle(false));
                 btn.setOnMouseEntered(e -> btn.setStyle(cellStyle(true)));
                 btn.setOnMouseExited(e -> btn.setStyle(cellStyle(false)));
-                btn.setOnAction(e -> player.trigger(cell));
+                btn.setOnAction(e -> {
+                    player.trigger(cell);
+                    btn.setStyle(cellStyle(false)); // Reset hover style after click
+                    btn.setOnMouseEntered(null);
+                    btn.setOnMouseExited(null);
+                });
 
                 grid.add(btn, col, row);
             }
@@ -133,7 +138,7 @@ public class JavaFXApp extends Application {
     private static String cellStyle(boolean hovered) {
         return "-fx-background-color: " + (hovered ? RGB_CELL_HOVER : RGB_CELL_IDLE) + ";"
              + "-fx-background-radius: 0;"
-             + "-fx-cursor: hand;";
+             + "-fx-cursor: " + (hovered ? "hand" : "auto") + ";";
     }
 
     public static void main(String[] args){
