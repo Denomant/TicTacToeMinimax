@@ -38,18 +38,12 @@ public class JavaFXApp extends Application {
     private static final String RGB_TEXT = "#eeeeee";
     private static final String FONT = "'Courier New', Courier, monospace";
 
-    // Temp for testing.
-    // TODO: Remove
-    public JavaFXApp(){
-        this.player = new JavaFXPlayer();
-        this.printer = new JavaFXPrinter();
-        this.initialBoard = new Board3x3();
-    }
     /**
-     * TODO:
-     * @param player
-     * @param printer
-     * @param initialBoard
+     * Initializes the JavaFXApp with the given player, printer, and initial board state. <br>
+     * Ensures the launch() method has access to the necessary dependencies for the JavaFX application to function properly.
+     * @param player The JavaFXPlayer instance responsible for handling user input and game logic interactions.
+     * @param printer The JavaFXPrinter instance responsible for rendering the game board.
+     * @param initialBoard The initial state of the Tic-Tac-Toe board.
      */
     public JavaFXApp(JavaFXPlayer player, JavaFXPrinter printer, TicTacToeBoard<?> initialBoard){
         this.player = player;

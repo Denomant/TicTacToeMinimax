@@ -11,7 +11,7 @@ repositories {
 version = '1.0'
 
 application {
-    mainClass = 'TicTacToe.javafx.JavaFXApp'
+    mainClass = 'App'
 }
 
 javafx {
@@ -46,7 +46,7 @@ tasks.withType(JavaCompile) {
 jar {
     manifest {
         attributes (
-            'Main-Class': 'TicTacToe.javafx.JavaFXApp',
+            'Main-Class': 'App',
         )
     }
     from {
