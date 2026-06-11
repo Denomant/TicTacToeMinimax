@@ -1,3 +1,4 @@
+package main;
 
 import simpleIO.*;
 import TicTacToe.board.*;
@@ -7,6 +8,7 @@ import TicTacToe.input.*;
 import TicTacToe.javafx.*;
 import TicTacToe.model.CellValue;
 import javafx.application.Application;
+import javafx.application.Platform;
 
 
 /**
@@ -50,7 +52,7 @@ public class App {
                     break;
                 case 2:
                     running = false;
-                    Console.print("Thanks for playing Tic-Tac-Toe! Goodbye!");
+                    close();
                     break;
                 default:
                     Console.print("Invalid option, exiting the game.");
@@ -169,5 +171,11 @@ public class App {
         
         Console.print("\nThis is the final board");
         Console.print(printer.render(board), false);
+    }
+
+    public static void close(){
+        Console.print("Thanks for playing Tic-Tac-Toe! Goodbye!");
+        Platform.exit();
+        System.exit(0);
     }
 }

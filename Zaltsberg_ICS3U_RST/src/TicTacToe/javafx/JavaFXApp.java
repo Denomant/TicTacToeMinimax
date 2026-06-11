@@ -1,7 +1,7 @@
 package TicTacToe.javafx;
 
 import java.util.concurrent.CountDownLatch;
-
+import main.App;
 import TicTacToe.board.*;
 import TicTacToe.model.*;
 import javafx.application.Application;
@@ -18,7 +18,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;;
+import javafx.stage.Stage;
 
 public class JavaFXApp extends Application {
     // Dependencies
@@ -188,7 +188,7 @@ public class JavaFXApp extends Application {
               + "-fx-text-fill: " + RGB_TEXT +";"
               + "-fx-padding: 4 10 4 10;"
               + "-fx-cursor: hand;");
-        exitBtn.setOnAction(e -> Platform.exit()); // TODO: Tie to saving Minimax
+        exitBtn.setOnAction(e -> App.close()); // TODO: Tie to saving Minimax
         BorderPane.setAlignment(exitBtn, Pos.TOP_RIGHT);
         controlPanel.setTop(exitBtn);
 
