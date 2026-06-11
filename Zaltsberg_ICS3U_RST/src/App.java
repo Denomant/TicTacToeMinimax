@@ -23,7 +23,7 @@ public class App {
     private static BoardPrinter printer;
     private static IntInputReader inputReader= new ConsoleIntInputReader();
     private static TicTacToePlayer[] players = new TicTacToePlayer[2];
-    private static JavaFXApp javafx;
+    private static boolean isJavaFX = false;
 
     public static void main(String[] args) { 
         boolean running = true;
@@ -95,8 +95,8 @@ public class App {
                     printer = new JavaFXPrinter();
                     players[0] = new JavaFXPlayer();
                     JavaFXApp.setDependencies((JavaFXPlayer) players[0], (JavaFXPrinter) printer, initialBoard);
-                    // Launch JavaFX in a background thread so the console doesn't freeze
-                    new Thread(() -> Application.launch(JavaFXApp.class, new String[0])).start();
+                    // Launch JavaFX after an opponent is chosen
+                    isJavaFX = true;
                     break;
                 default:
                     continue;
@@ -125,6 +125,16 @@ public class App {
                     continue;
             };
             break;
+        }
+
+        if (isJavaFX){
+            new Thread(() -> Application.launch(JavaFXApp.class, new String[0])).start();
+
+            try {
+                JavaFXApp.startupLatch.await(); // Wait for the JavaFX application to signal that it's ready
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

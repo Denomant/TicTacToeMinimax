@@ -16,6 +16,7 @@ public class JavaFXPrinter implements BoardPrinter{
     private GridPane grid;
 
     private ImageView[][] cache; // Cache for ImageViews to avoid creating new ones every render call.
+    private Button[][] btnCache; // Cache for Buttons to manage hover effects and actions.
     
     /**
      * Initializes the JavaFXPrinter.
@@ -43,6 +44,7 @@ public class JavaFXPrinter implements BoardPrinter{
         if (cache == null || cache.length != rows || cache[0].length != cols) {
             // Initialize cache if it's null or if the board size has changed
             cache = new ImageView[rows][cols];
+            btnCache = new Button[rows][cols];
             
             for (Node node : grid.getChildren()){
                 if (node instanceof Button btn){
@@ -65,6 +67,7 @@ public class JavaFXPrinter implements BoardPrinter{
                     // Attach it to the button and store it in cache
                     Platform.runLater(() -> btn.setGraphic(imgView)); // Ensure this runs on the JavaFX Application Thread
                     cache[row][col] = imgView;
+                    btnCache[row][col] = btn;
                 }
             }
         }
@@ -75,12 +78,15 @@ public class JavaFXPrinter implements BoardPrinter{
                 switch (cell.getValue()) {
                     case X:
                         cache[row][col].setImage(X_IMG);
+                        JavaFXApp.buttonHoverLogic(btnCache[row][col], false);
                         break;
                     case O:
                         cache[row][col].setImage(O_IMG);
+                        JavaFXApp.buttonHoverLogic(btnCache[row][col], false);
                         break;
                     default:
                         cache[row][col].setImage(null);
+                        JavaFXApp.buttonHoverLogic(btnCache[row][col], true);
                         break;
                 }
             }

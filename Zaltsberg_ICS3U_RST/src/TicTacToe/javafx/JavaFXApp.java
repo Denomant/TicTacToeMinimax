@@ -1,5 +1,7 @@
 package TicTacToe.javafx;
 
+import java.util.concurrent.CountDownLatch;
+
 import TicTacToe.board.*;
 import TicTacToe.model.*;
 import javafx.application.Application;
@@ -27,6 +29,9 @@ public class JavaFXApp extends Application {
     private GridPane grid;
     private Label turnLabel;
     private Button undoBtn;
+
+    // Synchronization latch to ensure JavaFX is fully initialized before the game starts
+    public static final CountDownLatch startupLatch = new CountDownLatch(1);
 
     // Colors
     private static final String RGB_GRID_GAPS = "#555555";
@@ -77,6 +82,9 @@ public class JavaFXApp extends Application {
         stage.setFullScreen(true);
         stage.setTitle("Tic-Tac-Toe");
         stage.show();
+
+        // Signal that JavaFX is ready and the game can start
+        startupLatch.countDown(); 
     }
 
     /**
@@ -121,15 +129,12 @@ public class JavaFXApp extends Application {
 
                 btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                 btn.setStyle(cellStyle(false));
-                btn.setOnMouseEntered(e -> btn.setStyle(cellStyle(true)));
-                btn.setOnMouseExited(e -> btn.setStyle(cellStyle(false)));
+                buttonHoverLogic(btn, true);
                 btn.setOnAction(e -> {
                     player.trigger(cell);
                     btn.setStyle(cellStyle(false)); // Reset hover style after click
-                    btn.setOnMouseEntered(null);
-                    btn.setOnMouseExited(null);
+                    buttonHoverLogic(btn, false);
                 });
-
                 grid.add(btn, col, row);
             }
         }
@@ -146,6 +151,23 @@ public class JavaFXApp extends Application {
         return "-fx-background-color: " + (hovered ? RGB_CELL_HOVER : RGB_CELL_IDLE) + ";"
              + "-fx-background-radius: 0;"
              + "-fx-cursor: " + (hovered ? "hand" : "auto") + ";";
+    }
+
+    /**
+     * Enables or disables hover effects for a given button. <br>
+     *  When enabled, the button will change color on mouse hover to indicate interactivity. <br>
+     *  When disabled, the button will not respond to mouse hover events and will maintain a static appearance.
+     * @param btn The Button for which to enable or disable hover effects.
+     * @param isOn Whether to enable (true) or disable (false) hover effects for the button.
+     */
+    public static void buttonHoverLogic(Button btn, boolean isOn){
+        if (isOn){
+            btn.setOnMouseEntered(e -> btn.setStyle(cellStyle(true)));
+            btn.setOnMouseExited(e -> btn.setStyle(cellStyle(false)));
+        } else {
+            btn.setOnMouseEntered(null);
+            btn.setOnMouseExited(null);
+        }
     }
 
     /**
