@@ -2,6 +2,7 @@ package TicTacToe.javafx;
 
 import TicTacToe.board.TicTacToeBoard;
 import TicTacToe.model.Cell;
+import TicTacToe.model.CellValue;
 import TicTacToe.player.TicTacToePlayer;
 import java.util.concurrent.CompletableFuture;
 
@@ -14,8 +15,17 @@ public class JavaFXPlayer implements TicTacToePlayer {
 
     @Override
     public Cell makeMove(TicTacToeBoard<?> board) {
-        Cell move = nextMove.join(); // Wait for the next move to be set by the JavaFX event handler
-        nextMove = new CompletableFuture<Cell>(); // Reset for the next move
+        Cell[][] cells = board.getCells();
+        Cell move;
+        int cellR;
+        int cellC;
+        do {
+            move = nextMove.join(); // Wait for the next move to be triggered
+            nextMove = new CompletableFuture<Cell>(); // Reset for the next move
+            cellR = move.getRow();
+            cellC = move.getCol();
+        } while (cells[cellR][cellC].getValue() != CellValue.EMPTY); // Ensure the move is valid on the current board
+        
         return move;
     }
 

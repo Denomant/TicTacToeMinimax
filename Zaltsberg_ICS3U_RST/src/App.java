@@ -37,8 +37,13 @@ public class App {
 
             game();
 
-            int userChoice = inputReader.readInt("\nDo you want to play again?\n1) Yes\n2) No (exit)\n");
-
+            int userChoice;
+            if (isJavaFX){
+                userChoice = Dialog.askYesNoQuestion("Do you want to play again?") ? 1 : 2;
+            } else {
+                userChoice = inputReader.readInt("\nDo you want to play again?\n1) Yes\n2) No (exit)\n");
+            }
+             
             switch (userChoice) {
                 case 1:
                     board = board.getClass().equals(Board3x3.class) ? new Board3x3() : new Board4x4();
