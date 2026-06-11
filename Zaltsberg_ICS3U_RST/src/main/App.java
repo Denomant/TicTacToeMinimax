@@ -41,7 +41,7 @@ public class App {
 
             int userChoice;
             if (isJavaFX){
-                userChoice = Dialog.askYesNoQuestion("Do you want to play again?") ? 1 : 2;
+                userChoice = JavaFXApp.askYesNoQuestion("Do you want to play again?") ? 1 : 2;
             } else {
                 userChoice = inputReader.readInt("\nDo you want to play again?\n1) Yes\n2) No (exit)\n");
             }
@@ -118,7 +118,11 @@ public class App {
 
             switch (userChoice) {
                 case 1:
-                    players[1] = new User(inputReader);
+                    if (isJavaFX){
+                        players[1] = players[0]; // Point to the same player object to communicate
+                    } else {
+                        players[1] = new User(inputReader);
+                    }
                     break;
                 case 2:
                     players[1] = new Random();

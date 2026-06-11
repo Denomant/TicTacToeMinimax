@@ -19,6 +19,9 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.Modality;
+import javafx.stage.StageStyle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class JavaFXApp extends Application {
     // Dependencies
@@ -221,5 +224,93 @@ public class JavaFXApp extends Application {
         controlPanel.setCenter(body);
 
         return controlPanel;
+    }
+
+    /**
+     * Displays a styled Yes/No dialog matching the game's theme.
+     * Can be called from any thread.
+     */
+    public static boolean askYesNoQuestion(String question) {
+        AtomicBoolean answer = new AtomicBoolean(false);
+        CountDownLatch latch = new CountDownLatch(1);
+
+        Platform.runLater(() -> {
+            Stage dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.initStyle(StageStyle.UNDECORATED);
+
+            VBox vbxDialog = new VBox(30);
+            vbxDialog.setAlignment(Pos.CENTER);
+            vbxDialog.setPadding(new Insets(40));
+            vbxDialog.setStyle(
+                "-fx-background-color: " + RGB_BACKGROUND + ";" +
+                "-fx-border-color: " + RGB_GRID_GAPS + ";" +
+                "-fx-border-width: 2px;");
+
+            Label lblQuestion = new Label(question);
+            lblQuestion.setWrapText(true);
+            lblQuestion.setAlignment(Pos.CENTER);
+            lblQuestion.setStyle(
+                "-fx-font-family: " + FONT + ";" +
+                "-fx-font-size: 22px;" +
+                "-fx-text-fill: " + RGB_TEXT + ";" +
+                "-fx-font-weight: bold;");
+
+
+            HBox hbxButtons = new HBox(20);
+            hbxButtons.setAlignment(Pos.CENTER);
+
+            Button btnYes = new Button("Yes");
+            setupDialogButton(btnYes, RGB_BTN_BACK);
+            btnYes.setOnAction(e -> {
+                answer.set(true);
+                dialog.close();
+                latch.countDown();
+            });
+
+            Button btnNo = new Button("No");
+            setupDialogButton(btnNo, RGB_EXIT_RED);
+            btnNo.setOnAction(e -> {
+                answer.set(false);
+                dialog.close();
+                latch.countDown();
+            });
+
+            hbxButtons.getChildren().addAll(btnYes, btnNo);
+            vbxDialog.getChildren().addAll(lblQuestion, hbxButtons);
+            Scene scene = new Scene(vbxDialog);
+            dialog.setScene(scene);
+            dialog.showAndWait();
+            latch.countDown();
+        });
+
+        try {
+            latch.await(); // Wait for the user to make a choice
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        return answer.get();
+    }
+
+    /**
+     * Helper to apply consistent styling to dialog buttons.
+     * @param btn The Button to style.
+     * @param color The background color to apply to the button, matching the game's theme.
+     */
+    private static void setupDialogButton(Button btn, String color) {
+        btn.setMinWidth(120);
+        String baseStyle = 
+            "-fx-background-color: " + color + ";" +
+            "-fx-text-fill: " + RGB_TEXT + ";" +
+            "-fx-font-family: " + FONT + ";" +
+            "-fx-font-size: 18px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-background-radius: 0;" +
+            "-fx-cursor: hand;";
+        
+        btn.setStyle(baseStyle);
+        btn.setOnMouseEntered(e -> btn.setStyle(baseStyle + "-fx-opacity: 0.8;"));
+        btn.setOnMouseExited(e -> btn.setStyle(baseStyle));
     }
 }
