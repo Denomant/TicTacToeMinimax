@@ -19,7 +19,7 @@ import TicTacToe.player.User;
 import javafx.application.Application;
 import javafx.application.Platform;
 import simpleIO.Console;
-
+import java.util.ArrayList;
 
 /**
  * The main application class for the Tic Tac Toe game. <br>
@@ -30,7 +30,7 @@ import simpleIO.Console;
 */
 
 public class App {
-    private static TicTacToeBoard<?> initialBoard;
+    private static ArrayList<TicTacToeBoard<?>> history;
     private static TicTacToeBoard<?> board;       
     private static BoardPrinter printer;
     private static IntInputReader inputReader= new ConsoleIntInputReader();
@@ -38,6 +38,7 @@ public class App {
     private static boolean isJavaFX = false;
 
     public static void main(String[] args) { 
+        history = new ArrayList<>();
         boolean running = true;
         Console.print("Welcome to Tic-Tac-Toe!\n");
 
@@ -45,7 +46,7 @@ public class App {
 
         Console.print();
         while (running){
-            board = initialBoard;
+            board = history.get(0);
 
             game();
 
@@ -82,10 +83,10 @@ public class App {
 
             switch (userChoice) {
                 case 1:
-                    initialBoard = new Board3x3();
+                    history.add(new Board3x3());
                     break;
                 case 2:
-                    initialBoard = new Board4x4();
+                    history.add(new Board4x4());
                     break;
                 default:
                     continue;
@@ -110,7 +111,7 @@ public class App {
                 case 3:
                     printer = new JavaFXPrinter();
                     players[0] = new JavaFXPlayer();
-                    JavaFXApp.setDependencies((JavaFXPlayer) players[0], (JavaFXPrinter) printer, initialBoard);
+                    JavaFXApp.setDependencies((JavaFXPlayer) players[0], (JavaFXPrinter) printer, history.get(0));
                     // Launch JavaFX after an opponent is chosen
                     isJavaFX = true;
                     break;
@@ -137,9 +138,13 @@ public class App {
                     players[1] = new Random();
                     break;
                 case 3:
-                    players[1] = new PersistentMinimax("data/minimax.dat");
+                    if (history.get(0) instanceof Board3x3){
+                        players[1] = new PersistentMinimax("data/minimax3x3.dat");
+                    } else {
+                        players[1] = new PersistentMinimax("data/minimax4x4.dat");
+                    }
                     Console.print("Preparing AI...\nThis might take up to a minute depending on the board size.");
-                    players[1].makeMove(initialBoard); // Explore some of the branches
+                    players[1].makeMove(history.get(0)); // Explore some of the branches
                     break;
                 default:
                     continue;

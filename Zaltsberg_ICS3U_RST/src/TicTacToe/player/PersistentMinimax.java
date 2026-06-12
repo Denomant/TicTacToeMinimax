@@ -21,16 +21,17 @@ public class PersistentMinimax extends Minimax {
      * Default constructor for PersistentMinimax. <br>
      * Initializes the Minimax player and loads memory from the default file name. <br>
      */
-    public PersistentMinimax() {
+    public PersistentMinimax(int size) {
         super();
-        this.filename = "minimax_memory.dat"; // Default filename
+        this.filename = "minimax_memory_" + size + "x" + size + ".dat"; // Default filename
         loadMemory();
     }
 
     /**
      * Constructor for PersistentMinimax with custom filename. <br>
      * Initializes the Minimax player and loads memory from the specified file name. <br>
-     * @param filename The name of the file to load memory from and save memory to.
+     * @param filename The name of the file to load memory from and save memory to. <br>
+     * Make sure this points to the correct 3x3 or 4x4 minimax memory file depending on the intended use. <br>
      */
     public PersistentMinimax(String filename) {
         super();
