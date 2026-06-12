@@ -1,10 +1,14 @@
+package main;
 
 import simpleIO.*;
 import TicTacToe.board.*;
 import TicTacToe.boardprinter.*;
 import TicTacToe.player.*;
 import TicTacToe.input.*;
+import TicTacToe.javafx.*;
 import TicTacToe.model.CellValue;
+import javafx.application.Application;
+import javafx.application.Platform;
 
 
 /**
@@ -21,6 +25,7 @@ public class App {
     private static BoardPrinter printer;
     private static IntInputReader inputReader= new ConsoleIntInputReader();
     private static TicTacToePlayer[] players = new TicTacToePlayer[2];
+    private static boolean isJavaFX = false;
 
     public static void main(String[] args) { 
         boolean running = true;
@@ -34,8 +39,13 @@ public class App {
 
             game();
 
-            int userChoice = inputReader.readInt("\nDo you want to play again?\n1) Yes\n2) No (exit)\n");
-
+            int userChoice;
+            if (isJavaFX){
+                userChoice = JavaFXApp.askYesNoQuestion("Do you want to play again?") ? 1 : 2;
+            } else {
+                userChoice = inputReader.readInt("\nDo you want to play again?\n1) Yes\n2) No (exit)\n");
+            }
+             
             switch (userChoice) {
                 case 1:
                     board = board.getClass().equals(Board3x3.class) ? new Board3x3() : new Board4x4();
@@ -46,6 +56,7 @@ public class App {
                     if (players[1] instanceof PersistentMinimax){
                         ((PersistentMinimax) players[1]).saveMemory();
                     }
+                    close();
                     break;
                 default:
                     Console.print("Invalid option, exiting the game.");
@@ -80,17 +91,26 @@ public class App {
             break;
         }
 
-        // Printer
+        // Printer + main player
         while (true) {
             Console.print("What kind of printing style do you prefer?");
-            userChoice = inputReader.readInt("1) Simple\n2) Fancy (box-drawing characters might not be supported by all terminals)\n");
+            userChoice = inputReader.readInt("1) Simple\n2) Fancy (box-drawing characters might not be supported by all terminals)\n3) JavaFX (graphical)\n");
 
             switch (userChoice) {
                 case 1:
                     printer = new SimplePrinter();
+                    players[0] = new User(inputReader);
                     break;
                 case 2:
                     printer = new BoxCharacterPrinter();
+                    players[0] = new User(inputReader);
+                    break;
+                case 3:
+                    printer = new JavaFXPrinter();
+                    players[0] = new JavaFXPlayer();
+                    JavaFXApp.setDependencies((JavaFXPlayer) players[0], (JavaFXPrinter) printer, initialBoard);
+                    // Launch JavaFX after an opponent is chosen
+                    isJavaFX = true;
                     break;
                 default:
                     continue;
@@ -98,15 +118,18 @@ public class App {
             break;
         }
 
-        // Player and opponents.
-        players[0] = new User(inputReader);
+        // Opponent.
         while (true) {
             Console.print("Who do you want to play against?");
             userChoice = inputReader.readInt("1) Another Player (turn-based local multiplayer using the same PC)\n2) Simple AI\n3) Impossible AI\n");
 
             switch (userChoice) {
                 case 1:
-                    players[1] = new User(inputReader);
+                    if (isJavaFX){
+                        players[1] = players[0]; // Point to the same player object to communicate
+                    } else {
+                        players[1] = new User(inputReader);
+                    }
                     break;
                 case 2:
                     players[1] = new Random();
@@ -120,6 +143,16 @@ public class App {
                     continue;
             };
             break;
+        }
+
+        if (isJavaFX){
+            new Thread(() -> Application.launch(JavaFXApp.class, new String[0])).start();
+
+            try {
+                JavaFXApp.startupLatch.await(); // Wait for the JavaFX application to signal that it's ready
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -149,5 +182,11 @@ public class App {
         
         Console.print("\nThis is the final board");
         Console.print(printer.render(board), false);
+    }
+
+    public static void close(){
+        Console.print("Thanks for playing Tic-Tac-Toe! Goodbye!");
+        Platform.exit();
+        System.exit(0);
     }
 }

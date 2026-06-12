@@ -11,7 +11,7 @@ repositories {
 version = '1.0'
 
 application {
-    mainClass = 'App'
+    mainClass = 'main.App'
 }
 
 javafx {
@@ -23,6 +23,9 @@ sourceSets {
     main {
         java {
             srcDirs = ['src']
+        }
+        resources {
+            srcDirs = ['res']
         }
     }
     test {
@@ -43,7 +46,7 @@ tasks.withType(JavaCompile) {
 jar {
     manifest {
         attributes (
-            'Main-Class': 'App',
+            'Main-Class': 'main.App',
         )
     }
     from {
