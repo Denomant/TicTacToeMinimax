@@ -1,9 +1,10 @@
 package TicTacToe.javafx;
 
 import java.util.concurrent.CountDownLatch;
-import main.App;
-import TicTacToe.board.*;
-import TicTacToe.model.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import TicTacToe.board.TicTacToeBoard;
+import TicTacToe.model.Cell;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -11,17 +12,25 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import java.util.concurrent.atomic.AtomicBoolean;
+import main.App;
+
+/**
+ * JavaFX application handler for the Tic Tac Toe game. <br>
+ * Responsible for rendering the game board, handling user interactions, and displaying Yes/No dialogs. <br>
+ * JavaFXApp.java
+ * @author Denis Zaltsberg
+ * @date 12/06/2026
+*/
 
 public class JavaFXApp extends Application {
     // Dependencies

@@ -2,7 +2,6 @@ package TicTacToe.player;
 
 import TicTacToe.model.*;
 import java.io.*;
-import java.util.ArrayList;
 
 /**
  * A class extending Minimax with persistent memory across game launches. <br>

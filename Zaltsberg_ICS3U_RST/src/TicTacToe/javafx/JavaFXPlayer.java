@@ -1,10 +1,19 @@
 package TicTacToe.javafx;
 
+import java.util.concurrent.CompletableFuture;
+
 import TicTacToe.board.TicTacToeBoard;
 import TicTacToe.model.Cell;
 import TicTacToe.model.CellValue;
 import TicTacToe.player.TicTacToePlayer;
-import java.util.concurrent.CompletableFuture;
+
+/**
+ * JavaFX implementation of a TicTacToePlayer. <br>
+ * Uses CompletableFuture to wait for user input from the JavaFX interface in the main sequential workflow. <br>
+ * JavaFXPlayer.java
+ * @author Denis Zaltsberg
+ * @date 12/06/2026
+*/
 
 public class JavaFXPlayer implements TicTacToePlayer {
     private CompletableFuture<Cell> nextMove;

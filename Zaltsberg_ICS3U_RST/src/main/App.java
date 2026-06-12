@@ -1,14 +1,24 @@
 package main;
 
-import simpleIO.*;
-import TicTacToe.board.*;
-import TicTacToe.boardprinter.*;
-import TicTacToe.player.*;
-import TicTacToe.input.*;
-import TicTacToe.javafx.*;
+import TicTacToe.board.Board3x3;
+import TicTacToe.board.Board4x4;
+import TicTacToe.board.TicTacToeBoard;
+import TicTacToe.boardprinter.BoardPrinter;
+import TicTacToe.boardprinter.BoxCharacterPrinter;
+import TicTacToe.boardprinter.SimplePrinter;
+import TicTacToe.input.ConsoleIntInputReader;
+import TicTacToe.input.IntInputReader;
+import TicTacToe.javafx.JavaFXApp;
+import TicTacToe.javafx.JavaFXPlayer;
+import TicTacToe.javafx.JavaFXPrinter;
 import TicTacToe.model.CellValue;
+import TicTacToe.player.PersistentMinimax;
+import TicTacToe.player.Random;
+import TicTacToe.player.TicTacToePlayer;
+import TicTacToe.player.User;
 import javafx.application.Application;
 import javafx.application.Platform;
+import simpleIO.Console;
 
 
 /**
@@ -16,7 +26,7 @@ import javafx.application.Platform;
  * Handles the configuration and the game loop. <br>
  * App.java
  * @author Denis Zaltsberg
- * @date 8/06/2026
+ * @date 12/06/2026
 */
 
 public class App {
