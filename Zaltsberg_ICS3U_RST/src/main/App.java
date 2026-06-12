@@ -51,19 +51,11 @@ public class App {
                     board = board.getClass().equals(Board3x3.class) ? new Board3x3() : new Board4x4();
                     break;
                 case 2:
-                    running = false;
-                    Console.print("Thanks for playing Tic-Tac-Toe! Goodbye!");
-                    if (players[1] instanceof PersistentMinimax){
-                        ((PersistentMinimax) players[1]).saveMemory();
-                    }
                     close();
                     break;
                 default:
                     Console.print("Invalid option, exiting the game.");
-                    running = false;
-                    if (players[1] instanceof PersistentMinimax){
-                        ((PersistentMinimax) players[1]).saveMemory();
-                    }
+                    close();
                     break;
             };
         }
@@ -135,7 +127,7 @@ public class App {
                     players[1] = new Random();
                     break;
                 case 3:
-                    players[1] = new PersistentMinimax();
+                    players[1] = new PersistentMinimax("data/minimax.dat");
                     Console.print("Preparing AI...\nThis might take up to a minute depending on the board size.");
                     players[1].makeMove(initialBoard); // Explore some of the branches
                     break;
@@ -185,6 +177,10 @@ public class App {
     }
 
     public static void close(){
+        if (players[1] instanceof PersistentMinimax){
+            ((PersistentMinimax) players[1]).saveMemory();
+            Console.print("Successfully saved AI memory to file.");
+        }
         Console.print("Thanks for playing Tic-Tac-Toe! Goodbye!");
         Platform.exit();
         System.exit(0);
