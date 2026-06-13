@@ -38,9 +38,9 @@ public class JavaFXApp extends Application {
     private static JavaFXPrinter printer;
     private static TicTacToeBoard<?> initialBoard;
     
-    private GridPane grid;
-    private Label turnLabel;
-    private Button undoBtn;
+    private static GridPane grid;
+    private static Label turnLabel;
+    private static Button undoBtn;
 
     // Synchronization latch to ensure JavaFX is fully initialized before the game starts
     public static final CountDownLatch startupLatch = new CountDownLatch(1);
@@ -322,5 +322,9 @@ public class JavaFXApp extends Application {
         btn.setStyle(baseStyle);
         btn.setOnMouseEntered(e -> btn.setStyle(baseStyle + "-fx-opacity: 0.8;"));
         btn.setOnMouseExited(e -> btn.setStyle(baseStyle));
+    }
+
+    public static void updateTurnLabel(String text){
+        Platform.runLater(() -> turnLabel.setText(text));
     }
 }

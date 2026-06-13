@@ -38,6 +38,7 @@ public class App {
     private static IntInputReader inputReader= new ConsoleIntInputReader();
     private static TicTacToePlayer[] players = new TicTacToePlayer[2];
     private static boolean isJavaFX = false;
+    private static String winMessage = "";
 
     public static void main(String[] args) { 
         history = new ArrayList<>();
@@ -54,7 +55,7 @@ public class App {
 
             int userChoice;
             if (isJavaFX){
-                userChoice = JavaFXApp.askYesNoQuestion("Do you want to play again?") ? 1 : 2;
+                userChoice = JavaFXApp.askYesNoQuestion(winMessage + "\nDo you want to play again?") ? 1 : 2;
             } else {
                 userChoice = inputReader.readInt("\nDo you want to play again?\n1) Yes\n2) No (exit)\n");
             }
@@ -174,6 +175,10 @@ public class App {
 
         while (!board.isTerminal()){
 
+            if (isJavaFX) {
+                JavaFXApp.updateTurnLabel("It is " + board.getCurrentPlayer().getCharacter() + "'s Turn");
+            }
+
             Console.print("Player " + (currentPlayer + 1) + "'s Turn. This is the board (you are " + board.getCurrentPlayer().getCharacter() + "):");
             Console.print(printer.render(board));
 
@@ -204,8 +209,10 @@ public class App {
 
         if (board.getWinner() != CellValue.EMPTY){
             Console.print("Player " + (currentPlayer + 1) + " has WON!!!");
+            winMessage = "Player " + (currentPlayer + 1) + " has WON!!!";
         } else {
             Console.print("The game ended with a tie...");
+            winMessage = "The game ended with a tie...";
         }
         
         Console.print("\nThis is the final board");
@@ -213,10 +220,13 @@ public class App {
     }
 
     public static void close(){
+
+        /* Bake in memory for native image simplicity
         if (players[1] instanceof PersistentMinimax){
             ((PersistentMinimax) players[1]).saveMemory();
             Console.print("Successfully saved AI memory to file.");
         }
+        */
         Console.print("Thanks for playing Tic-Tac-Toe! Goodbye!");
         Platform.exit();
         System.exit(0);
