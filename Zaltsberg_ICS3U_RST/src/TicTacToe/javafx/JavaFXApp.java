@@ -227,7 +227,8 @@ public class JavaFXApp extends Application {
               + "-fx-background-color: " + RGB_BTN_BACK + ";"
               + "-fx-padding: 10 20 10 20;"
               + "-fx-cursor: hand;");
-        // TODO: Undo logic
+        
+        undoBtn.setOnAction(e -> player.triggerUndo());
 
         body.getChildren().addAll(turnLabel, undoBtn);
         controlPanel.setCenter(body);

@@ -1,7 +1,6 @@
 package TicTacToe.player;
 
 import TicTacToe.board.TicTacToeBoard;
-import TicTacToe.model.Cell;
 
 /**
  * An interface representing an input method for making moves in a Tic Tac Toe game. <br>

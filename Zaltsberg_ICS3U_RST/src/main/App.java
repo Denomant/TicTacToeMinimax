@@ -1,5 +1,7 @@
 package main;
 
+import java.util.ArrayList;
+
 import TicTacToe.board.Board3x3;
 import TicTacToe.board.Board4x4;
 import TicTacToe.board.TicTacToeBoard;
@@ -13,13 +15,13 @@ import TicTacToe.javafx.JavaFXPlayer;
 import TicTacToe.javafx.JavaFXPrinter;
 import TicTacToe.model.CellValue;
 import TicTacToe.player.PersistentMinimax;
+import TicTacToe.player.PlayerAction;
 import TicTacToe.player.Random;
 import TicTacToe.player.TicTacToePlayer;
 import TicTacToe.player.User;
 import javafx.application.Application;
 import javafx.application.Platform;
 import simpleIO.Console;
-import java.util.ArrayList;
 
 /**
  * The main application class for the Tic Tac Toe game. <br>
@@ -60,6 +62,8 @@ public class App {
             switch (userChoice) {
                 case 1:
                     board = board.getClass().equals(Board3x3.class) ? new Board3x3() : new Board4x4();
+                    history.clear();
+                    history.add(board);
                     break;
                 case 2:
                     close();
@@ -173,7 +177,24 @@ public class App {
             Console.print("Player " + (currentPlayer + 1) + "'s Turn. This is the board (you are " + board.getCurrentPlayer().getCharacter() + "):");
             Console.print(printer.render(board));
 
-            board = board.moveResult(players[currentPlayer].makeMove(board).move());
+            PlayerAction action = players[currentPlayer].makeMove(board);
+
+            // Undo 2 moves, to return to the same player but with the previous board state
+            if (action == PlayerAction.undo){
+                if (history.size() > 2){
+                    int len = history.size();
+                    history.remove(len - 1);
+                    history.remove(len - 2);
+                    board = history.get(history.size() - 1);
+                    Console.print("Move undone.");
+                } else {
+                    Console.print("No moves to undo!");
+                }
+                continue; // Skip the rest of the loop and let the same player move again
+            }
+
+            board = board.moveResult(action.move());
+            history.add(board);
             Console.print("Player " + (currentPlayer + 1) + " has made their move.\n");
 
             currentPlayer = (currentPlayer + 1) % 2;
