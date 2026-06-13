@@ -17,14 +17,14 @@ public class Random implements TicTacToePlayer {
      * @return a random valid move from the board.
      */
     @Override
-    public Cell makeMove(TicTacToeBoard<?> board) {
+    public PlayerAction makeMove(TicTacToeBoard<?> board) {
         if (board.isTerminal()){
-            return null;
+            return new PlayerAction(null);
         }
 
         Cell[] emptyCells = board.getEmptyCells();
         int randomIndex = (int) (Math.random() * emptyCells.length);
-        return emptyCells[randomIndex];
+        return new PlayerAction(emptyCells[randomIndex]);
     }
 
 }

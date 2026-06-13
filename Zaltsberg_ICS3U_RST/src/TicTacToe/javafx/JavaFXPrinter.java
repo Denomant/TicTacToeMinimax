@@ -1,14 +1,22 @@
 package TicTacToe.javafx;
 
 import TicTacToe.board.TicTacToeBoard;
-import TicTacToe.model.*;
 import TicTacToe.boardprinter.BoardPrinter;
-import javafx.scene.layout.GridPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import TicTacToe.model.Cell;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+
+/**
+ * JavaFX implementation of a BoardPrinter. <br>
+ * Updates a connected GridPane of Buttons with X and O images based on the board state. <br>
+ * JavaFXPrinter.java
+ * @author Denis Zaltsberg
+ * @date 12/06/2026
+*/
 
 public class JavaFXPrinter implements BoardPrinter{
     private Image X_IMG;

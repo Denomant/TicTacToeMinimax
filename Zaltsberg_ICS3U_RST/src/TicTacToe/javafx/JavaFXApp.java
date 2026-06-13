@@ -1,9 +1,10 @@
 package TicTacToe.javafx;
 
 import java.util.concurrent.CountDownLatch;
-import main.App;
-import TicTacToe.board.*;
-import TicTacToe.model.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import TicTacToe.board.TicTacToeBoard;
+import TicTacToe.model.Cell;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -11,17 +12,25 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import java.util.concurrent.atomic.AtomicBoolean;
+import main.App;
+
+/**
+ * JavaFX application handler for the Tic Tac Toe game. <br>
+ * Responsible for rendering the game board, handling user interactions, and displaying Yes/No dialogs. <br>
+ * JavaFXApp.java
+ * @author Denis Zaltsberg
+ * @date 12/06/2026
+*/
 
 public class JavaFXApp extends Application {
     // Dependencies
@@ -29,9 +38,9 @@ public class JavaFXApp extends Application {
     private static JavaFXPrinter printer;
     private static TicTacToeBoard<?> initialBoard;
     
-    private GridPane grid;
-    private Label turnLabel;
-    private Button undoBtn;
+    private static GridPane grid;
+    private static Label turnLabel;
+    private static Button undoBtn;
 
     // Synchronization latch to ensure JavaFX is fully initialized before the game starts
     public static final CountDownLatch startupLatch = new CountDownLatch(1);
@@ -218,7 +227,8 @@ public class JavaFXApp extends Application {
               + "-fx-background-color: " + RGB_BTN_BACK + ";"
               + "-fx-padding: 10 20 10 20;"
               + "-fx-cursor: hand;");
-        // TODO: Undo logic
+        
+        undoBtn.setOnAction(e -> player.triggerUndo());
 
         body.getChildren().addAll(turnLabel, undoBtn);
         controlPanel.setCenter(body);
@@ -312,5 +322,9 @@ public class JavaFXApp extends Application {
         btn.setStyle(baseStyle);
         btn.setOnMouseEntered(e -> btn.setStyle(baseStyle + "-fx-opacity: 0.8;"));
         btn.setOnMouseExited(e -> btn.setStyle(baseStyle));
+    }
+
+    public static void updateTurnLabel(String text){
+        Platform.runLater(() -> turnLabel.setText(text));
     }
 }
