@@ -22,7 +22,7 @@ public class _JUnit_Players {
 
     private void testPlayerMovesValid(TicTacToePlayer player) {
         for (TicTacToeBoard<?> board : boards) {
-            Cell move = player.makeMove(board);
+            Cell move = player.makeMove(board).move();
             if (board.isTerminal()) {
                 Assert.assertNull("Player should return null on full board", move);
             } else {
@@ -80,7 +80,7 @@ public class _JUnit_Players {
             TicTacToePlayer player =
                     (board instanceof Board3x3) ? minimax3x3 : minimax4x4;
 
-            Cell move = player.makeMove(board);
+            Cell move = player.makeMove(board).move();
 
             if (board.isTerminal()) {
                 Assert.assertNull(move);
@@ -122,7 +122,7 @@ public class _JUnit_Players {
         for (int i = 0; i < winInOneBoards.length; i++) {
             TicTacToeBoard<?> board = winInOneBoards[i];
             Cell expectedMove = expectedMoves[i];
-            Cell move = minimax3x3.makeMove(board);
+            Cell move = minimax3x3.makeMove(board).move();
             Assert.assertNotNull("Minimax should return a move to win", move);
             Assert.assertEquals("Expected winning move at (" + expectedMove.getRow() + "," + expectedMove.getCol() + "). Board: " + board, expectedMove, move);
         }
@@ -159,7 +159,7 @@ public class _JUnit_Players {
         for (int i = 0; i < winInOneBoards.length; i++) {
             TicTacToeBoard<?> board = winInOneBoards[i];
             Cell expectedMove = expectedMoves[i];
-            Cell move = minimax4x4.makeMove(board);
+            Cell move = minimax4x4.makeMove(board).move();
             Assert.assertNotNull("Minimax should return a move to win", move);
             Assert.assertEquals("Expected winning move at (" + expectedMove.getRow() + "," + expectedMove.getCol() + ")", expectedMove, move);
         }
@@ -187,24 +187,24 @@ public class _JUnit_Players {
         // Check reprompting on negative, 0, or out of bounds input
         int[] invalidInputs = new int[] {
             // 3x3 board
-            -1, 0, 8, 4, 5, // all should be reprompted
+            -2, 0, 8, 4, 5, // all should be reprompted
             2, // valid
-            -1, 0, 8, 4, 5, // all should be reprompted again
+            -2, 0, 8, 4, 5, // all should be reprompted again
             2, // valid
 
             // 4x4 board
-            -1, 0, 8, 5, // all should be reprompted
+            -2, 0, 8, 5, // all should be reprompted
             4, // valid
-            -1, 0, 8, 5, // all should be reprompted again
+            -2, 0, 8, 5, // all should be reprompted again
             2  // valid
         };
 
         user = new User(new MockIntInputReader(invalidInputs));
         Assert.assertNotNull("Player should be initialized", user);
-        Cell move = user.makeMove(new Board3x3());
+        Cell move = user.makeMove(new Board3x3()).move();
         Assert.assertEquals("User should eventually provide a valid move after invalid inputs", new Cell(1, 1), move);
 
-        move = user.makeMove(new Board4x4());
+        move = user.makeMove(new Board4x4()).move();
         Assert.assertEquals("User should eventually provide a valid move after invalid inputs", new Cell(3, 1), move);
 
         // Check reprompting on occupied cell
@@ -220,7 +220,7 @@ public class _JUnit_Players {
         };
 
         user = new User(new MockIntInputReader(occupiedInputs));
-        Assert.assertEquals("User should eventually provide a valid move after selecting occupied cells", new Cell(2, 2), user.makeMove(boards[1]));
-        Assert.assertEquals("User should eventually provide a valid move after selecting occupied cells at board\n", new Cell(3, 3), user.makeMove(boards[6]));
+        Assert.assertEquals("User should eventually provide a valid move after selecting occupied cells", new Cell(2, 2), user.makeMove(boards[1]).move());
+        Assert.assertEquals("User should eventually provide a valid move after selecting occupied cells at board\n", new Cell(3, 3), user.makeMove(boards[6]).move());
     }
 }

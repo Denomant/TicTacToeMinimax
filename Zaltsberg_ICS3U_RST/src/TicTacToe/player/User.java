@@ -1,5 +1,7 @@
 package TicTacToe.player;
 
+import simpleIO.Console;
+
 import TicTacToe.board.TicTacToeBoard;
 import TicTacToe.model.Cell;
 
@@ -26,12 +28,13 @@ public class User implements TicTacToePlayer {
     }
 
     /**
-     * @return a move based on user input.
+     * @return a move based on user input. <br>
+     * If -1 -1 is entered, the player will return an undo move. <br>
      */
     @Override
-    public Cell makeMove(TicTacToeBoard<?> board) {
+    public PlayerAction makeMove(TicTacToeBoard<?> board) {
         if (board.isTerminal()){
-            return null;
+            return new PlayerAction(null);
         }
 
         Cell[][] cellStructure = board.getCells();
@@ -45,20 +48,37 @@ public class User implements TicTacToePlayer {
 
             do {
                 row = inputReader.readInt("Enter the row of your move (1-" + maxRow + "):") - 1;
+                if (row == -2){ // if user entered -1 it becomes -2 after subtracting 1
+                    break;
+                }
             } while (row < 0 || row >= maxRow);
             
             do {
                 col = inputReader.readInt("Enter the col of your move (1-" + maxCol + "):") - 1;
+                if (col == -2){ // if user entered -1 it becomes -2 after subtracting 1
+                    break;
+                }
             } while (col < 0 || col >= maxCol);
+
+            if (row == -2 && col == -2){
+                return PlayerAction.undo;
+            }
+
+            // If only one of row or col is -2, it's an invalid move
+            if (row == -2 ^ col == -2){
+                Console.print("Invalid move. Please try again.\n");
+                continue;
+            }
 
             Cell userMove = new Cell(row, col);
 
             // Check if move is valid
             for (Cell validMove : emptyCells){
                 if (validMove.equals(userMove)){
-                    return userMove;
+                    return new PlayerAction(userMove);
                 }
             }
+            Console.print("Invalid move. Please try again.\n");
         }
     }
 

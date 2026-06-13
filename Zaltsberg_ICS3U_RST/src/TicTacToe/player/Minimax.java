@@ -219,13 +219,13 @@ public class Minimax implements TicTacToePlayer {
      * @return the best move for the current board state using the Minimax algorithm with alpha-beta pruning.
      */
     @Override
-    public Cell makeMove(TicTacToeBoard<?> board) {
+    public PlayerAction makeMove(TicTacToeBoard<?> board) {
         if (isBoardInMemory(board)){
-            return getFromMemory(board).move;
+            return new PlayerAction(getFromMemory(board).move);
         }
 
         if (board.isTerminal()){
-            return null;
+            return new PlayerAction(null);
         }
 
         int currentPlayerValue = board.getCurrentPlayer().getValue();
@@ -234,9 +234,9 @@ public class Minimax implements TicTacToePlayer {
         int alpha = Integer.MIN_VALUE, beta = Integer.MAX_VALUE;
 
         if (currentPlayerValue == CellValue.X.getValue()){
-            return maximizer(board, alpha, beta).move;
+            return new PlayerAction(maximizer(board, alpha, beta).move);
         } else {
-            return minimizer(board, alpha, beta).move;
+            return new PlayerAction(minimizer(board, alpha, beta).move);
         }
     }
 }

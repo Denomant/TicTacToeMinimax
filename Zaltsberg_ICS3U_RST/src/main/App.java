@@ -173,7 +173,7 @@ public class App {
             Console.print("Player " + (currentPlayer + 1) + "'s Turn. This is the board (you are " + board.getCurrentPlayer().getCharacter() + "):");
             Console.print(printer.render(board));
 
-            board = board.moveResult(players[currentPlayer].makeMove(board));
+            board = board.moveResult(players[currentPlayer].makeMove(board).move());
             Console.print("Player " + (currentPlayer + 1) + " has made their move.\n");
 
             currentPlayer = (currentPlayer + 1) % 2;
