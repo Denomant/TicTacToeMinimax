@@ -200,7 +200,7 @@ public class JavaFXApp extends Application {
               + "-fx-text-fill: " + RGB_TEXT +";"
               + "-fx-padding: 4 10 4 10;"
               + "-fx-cursor: hand;");
-        exitBtn.setOnAction(e -> App.close()); // TODO: Tie to saving Minimax
+        exitBtn.setOnAction(e -> App.close());
         BorderPane.setAlignment(exitBtn, Pos.TOP_RIGHT);
         controlPanel.setTop(exitBtn);
 

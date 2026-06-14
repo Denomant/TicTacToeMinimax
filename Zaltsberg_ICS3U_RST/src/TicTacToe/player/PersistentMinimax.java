@@ -12,8 +12,6 @@ import java.io.*;
  * @date 8/06/2026
 */
 
-// TODO: Before deploying, make memory read-only to fit in a binary executable
-
 public class PersistentMinimax extends Minimax {
     private String filename;
 
