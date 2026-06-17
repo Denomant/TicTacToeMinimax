@@ -9,7 +9,11 @@ permissions:
 
 jobs:
   build:
+    name: Test and build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ./Zaltsberg_ICS3U_RST
     strategy:
       fail-fast: false
       matrix:
@@ -30,6 +34,28 @@ jobs:
 
     - name: Run tests
       run: |
-        ls -la
         ./gradlew test
-      working-directory: ./Zaltsberg_ICS3U_RST
+
+    - name: Build app image
+      run: ./gradlew appImage
+
+    - name: Archive app image (Linux/macOS)
+      if: runner.os != 'Windows'
+      run: |
+        cd build/jpackage/image
+        zip -r ../../TicTacToe-${{ runner.os }}.zip .
+
+    - name: Archive app image (Windows)
+      if: runner.os == 'Windows'
+      shell: powershell
+      run: |
+        Compress-Archive -Path build\jpackage\image\* -DestinationPath build\jpackage\TicTacToe-Windows.zip
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: TicTacToe-${{ runner.os }}
+        path: Zaltsberg_ICS3U_RST/build/jpackage/TicTacToe-${{ runner.os }}.zip
+        if-no-files-found: error
+
+    
