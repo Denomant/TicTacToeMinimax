@@ -32,3 +32,4 @@ jobs:
       run: |
         ls -la
         ./gradlew test
+      working-directory: ./Zaltsberg_ICS3U_RST
