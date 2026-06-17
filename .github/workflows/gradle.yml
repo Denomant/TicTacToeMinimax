@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-# 
+
     steps:
     - name: Check out repository
       uses: actions/checkout@v4
@@ -29,4 +29,5 @@ jobs:
       uses: gradle/actions/setup-gradle@v6
 
     - name: Run tests
-      run: ./gradlew build
+      run: ./gradlew test
+        ls -la
