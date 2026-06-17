@@ -144,9 +144,9 @@ public class App {
                     break;
                 case 3:
                     if (history.get(0) instanceof Board3x3){
-                        players[1] = new PersistentMinimax("data/minimax3x3.dat");
+                        players[1] = new PersistentMinimax("/data/minimax3x3.dat");
                     } else {
-                        players[1] = new PersistentMinimax("data/minimax4x4.dat");
+                        players[1] = new PersistentMinimax("/data/minimax4x4.dat");
                     }
                     Console.print("Preparing AI...\nThis might take up to a minute depending on the board size.");
                     players[1].makeMove(history.get(0)); // Explore some of the branches

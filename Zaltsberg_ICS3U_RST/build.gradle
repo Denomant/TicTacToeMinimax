@@ -1,28 +1,41 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'de.infolektuell.jpackage' version '0.4.1'
 }
 
 repositories {
     mavenCentral()
 }
 
-version = '1.0'
+version = '1.1'
 
 application {
+    applicationName = 'TicTacToe'
     mainClass = 'main.App'
 }
 
-javafx {
-    version = '21'
-    modules = ['javafx.controls', 'javafx.fxml']
+// Load version from gradle.properties
+def javafxVersion = providers.gradleProperty("org.openjfx.javafx.version")
+
+// Detect the correct Maven classifier for the current platform
+def findMavenPlatformClassifier() {
+    return providers.systemProperty("os.name").zip(providers.systemProperty("os.arch")) { os, arch ->
+        def osPart = os.toLowerCase().contains("windows") ? "win"
+                   : os.toLowerCase().contains("mac")     ? "mac"
+                   :                                        "linux"
+        arch.toLowerCase().contains("aarch64") ? "${osPart}-aarch64" : osPart
+    }
 }
+
+def javafxClassifier = findMavenPlatformClassifier()
+def javafxModules = ['base', 'graphics', 'controls', 'fxml']
 
 sourceSets {
     main {
         java {
             srcDirs = ['src']
+            exclude 'TicTacToe/test/**'
         }
         resources {
             srcDirs = ['res']
@@ -36,24 +49,18 @@ sourceSets {
 }
 
 dependencies {
+    javafxModules.each { module ->
+        implementation "org.openjfx:javafx-${module}:${javafxVersion.get()}:${javafxClassifier.get()}"
+    }
     implementation fileTree(dir: 'lib', include: ['*.jar'])
+}
+
+jpackage {
+    common.isCommandLineApplication = true
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-}
-
-jar {
-    manifest {
-        attributes (
-            'Main-Class': 'main.App',
-        )
-    }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    } {
-        exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.EC', 'META-INF/MANIFEST.MF'
-    }
 }
 
 tasks.named('run', JavaExec).configure {

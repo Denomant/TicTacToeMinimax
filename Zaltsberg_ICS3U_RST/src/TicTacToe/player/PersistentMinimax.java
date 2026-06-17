@@ -12,8 +12,6 @@ import java.io.*;
  * @date 8/06/2026
 */
 
-// TODO: Before deploying, make memory read-only to fit in a binary executable
-
 public class PersistentMinimax extends Minimax {
     private String filename;
 
@@ -23,7 +21,7 @@ public class PersistentMinimax extends Minimax {
      */
     public PersistentMinimax(int size) {
         super();
-        this.filename = "minimax_memory_" + size + "x" + size + ".dat"; // Default filename
+        this.filename = "/data/minimax_memory_" + size + "x" + size + ".dat"; // Default filename
         loadMemory();
     }
 
@@ -43,7 +41,14 @@ public class PersistentMinimax extends Minimax {
      * Loads the minimax memory from the specified file. <br>
      */
     public void loadMemory() {
-        try (BufferedInputStream fileIn = new BufferedInputStream(new FileInputStream(this.filename))){
+        InputStream resourceStream = getClass().getResourceAsStream(this.filename);
+        
+        if (resourceStream == null) {
+            System.out.println("No existing minimax memory file found for " + this.filename + ". Starting with an empty memory.");
+            return;
+        }
+
+        try (BufferedInputStream fileIn = new BufferedInputStream(resourceStream)){
             loadMemoryFromStream(fileIn);
         } catch (FileNotFoundException e) {
             System.out.println("No existing minimax memory file found. Starting with an empty memory.");

@@ -43,8 +43,8 @@ public class _JUnit_Players {
     public void setUp() {
         // User is initialized in individual tests because it requires specific input list
         random = new Random();
-        minimax3x3 = new PersistentMinimax("data/minimax3x3.dat");
-        minimax4x4 = new PersistentMinimax("data/minimax4x4.dat");
+        minimax3x3 = new PersistentMinimax("/data/minimax3x3.dat");
+        minimax4x4 = new PersistentMinimax("/data/minimax4x4.dat");
 
         // Generate all boards
         Board3x3[] boards3x3 = _JUnit_Boards.generateBoards3x3();
