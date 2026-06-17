@@ -43,7 +43,7 @@ jobs:
       if: runner.os != 'Windows'
       run: |
         cd build/jpackage/image
-        zip -r ../../TicTacToe-${{ runner.os }}.zip .
+        zip -r ../TicTacToe-${{ runner.os }}.zip .
 
     - name: Archive app image (Windows)
       if: runner.os == 'Windows'
