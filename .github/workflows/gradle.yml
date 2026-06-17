@@ -32,4 +32,3 @@ jobs:
       run: |
         ls -la
         ./gradlew test
-      working-directory: ./your-subfolder-name
